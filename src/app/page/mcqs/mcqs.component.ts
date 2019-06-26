@@ -11,8 +11,6 @@ import { QuestionState } from 'src/app/shared/global';
 })
 export class McqsComponent extends PageComponent{
 
-  updatedQuestion:Question=null;
-
   constructor(
     public ms:MainService
   ) { 
@@ -20,8 +18,24 @@ export class McqsComponent extends PageComponent{
   }
 
   onEmit(question:Question) {
-      this.updatedQuestion=question;
+    if(question)  this.ms.updateQuestion(question)
   }
 
+  next() {
+    let i=this.ms.getNextQuestionIndex();
+    if(this.ms.checkCurrentQuestion() == QuestionState.Markedanswered)
+      this.ms.setQuestionState(QuestionState.Answered)
+    this.ms.setQuestionSelected(i)
+  }
+
+  mark() {
+    this.ms.markCurrentQuestion()
+    let i=this.ms.getNextQuestionIndex();
+    this.ms.setQuestionSelected(i)
+  }
+
+  clear() {
+    this.ms.clearCurrentQuestion()
+  }
 
 }

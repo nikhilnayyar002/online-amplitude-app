@@ -1,7 +1,9 @@
 import { Question } from './question';
+import { Section } from './sections';
 
 export interface Test {
     name:string;
     questions:Array<Question>;
-    sections:null;
+    sections:Array<Section>;
+    time:number;
 }

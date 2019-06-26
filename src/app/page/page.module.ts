@@ -7,6 +7,7 @@ import { InstructionsComponent } from './instructions/instructions.component';
 import { McqsComponent } from './mcqs/mcqs.component';
 import { PageDirective } from '../page.directive';
 import { ComponentsModule } from '../components/components.module';
+import { MymoduleModule } from '../mymodule.module';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { ComponentsModule } from '../components/components.module';
   imports: [
     CommonModule,
     PageRoutingModule,
-    ComponentsModule
+    ComponentsModule,
+    MymoduleModule
   ]
 })
 export class PageModule { }

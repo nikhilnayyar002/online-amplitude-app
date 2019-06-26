@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageComponent } from '../page-component.modal';
+import { MainService } from 'src/app/main.service';
 
 @Component({
   selector: 'app-questions',
@@ -8,7 +9,9 @@ import { PageComponent } from '../page-component.modal';
 })
 export class QuestionsComponent extends PageComponent{
 
-  constructor() {
+  constructor(
+    public ms:MainService
+  ) {
     super()
   }
 

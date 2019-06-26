@@ -3,17 +3,18 @@ import { CommonModule } from '@angular/common';
 
 import { ComponentsRoutingModule } from './components-routing.module';
 import { McqPageComponent } from './mcq-page/mcq-page.component';
-import { McqStateBadgeComponent } from './mcq-state-badge/mcq-state-badge.component';
 import { OverallTestDetailComponent } from './overall-test-detail/overall-test-detail.component';
 import { FormsModule} from '@angular/forms'
+import { MymoduleModule } from '../mymodule.module';
 
 @NgModule({
-  declarations: [McqPageComponent, McqStateBadgeComponent, OverallTestDetailComponent],
+  declarations: [McqPageComponent, OverallTestDetailComponent],
   imports: [
     CommonModule,
     FormsModule,
-    ComponentsRoutingModule
+    ComponentsRoutingModule,
+    MymoduleModule
   ],
-  exports:[McqPageComponent, McqStateBadgeComponent, OverallTestDetailComponent]
+  exports:[McqPageComponent, OverallTestDetailComponent]
 })
 export class ComponentsModule { }

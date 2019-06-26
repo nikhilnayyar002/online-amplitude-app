@@ -18,9 +18,10 @@
     -->
     <div class="page-content">
   
-     <ul>
-       <li>
-         Just beat the clock
+     <ul class="list-unstyled">
+       <li *ngFor="let question of ms.questions;let i=index">
+        <p class="font-weight-bold">Question No. {{i+1}}</p>
+        <p [innerHTML]="question.content | safeStyle:'dom'"></p>
        </li>
      </ul>
   

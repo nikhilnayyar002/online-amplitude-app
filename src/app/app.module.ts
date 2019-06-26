@@ -12,17 +12,20 @@ import { InstructionsComponent } from './page/instructions/instructions.componen
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 import { HttpClientModule } from '@angular/common/http';
+import { MymoduleModule } from './mymodule.module';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SafeStylePipe,
     PageSwitchDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     PageModule,
+    ComponentsModule,
+    MymoduleModule,
     HttpClientModule,
 
     /*

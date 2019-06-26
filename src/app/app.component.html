@@ -12,7 +12,7 @@
     <!-- time -->
     <span class="badge badge-primary" style="font-size: 14px;background:
       #244d79">
-      Time: 1:45:36
+      Time: {{mockedTestTime | timer}}
     </span>
   </span>
 
@@ -21,10 +21,12 @@
     <button type="button" 
       class="btn btn-sm btn-light mr-2"
       [style.display]="!mediaMatch?'block':'none'"
+      disabled
     >
       Full Screen
     </button>
-    <button type="button" class="btn btn-sm btn-light">Pause</button>
+    <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#pauseModal"
+    >Pause</button>
   </form>
 </nav>
 
@@ -33,15 +35,18 @@
 
   <!-- current test name -->
   <li class="nav-item">
-    <span class="nav-link disabled">L3 Geometry</span>
+    <span class="nav-link disabled">{{mockedTestName}}</span>
   </li>
 
   <!-- choose section -->
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-      role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+      role="button" aria-haspopup="true" aria-expanded="false">{{returnSectionOfQuestion()}}</a>
     <div class="dropdown-menu">
-      <a class="dropdown-item" href="#">Action</a>
+      <a *ngFor="let section of mockedTestSections" class="dropdown-item"
+        (click)="sectionClick(section.startQ-1)">
+        {{section.name}}
+      </a>
     </div>
   </li>
 </ul>
@@ -54,11 +59,11 @@
     [style.display]="mediaMatch && sideStateOpen?'block':'none'"></div>
 
   <!-- page content (question page) -->
-  <div class="page col position-relative">
+  <div class="col position-relative">
     <ng-template appPageSwitch></ng-template>
   </div>
 
-  <!-- side content (options) -->
+  <!-- side content -->
   <div class="col-auto border-left position-relative" style="z-index:15;">
 
 
@@ -74,7 +79,7 @@
     <div class="side" style="top:0; background: white;"
       [style.display]="sideStateOpen?'block':'none'">
 
-      <!-- side toggler-->
+      <!-- X- side toggler -->
       <div class="container btn btn-primary side-toggler"
         [style.display]="'none'">
         <div class="bar1"></div>
@@ -92,22 +97,22 @@
         <!-- user name -->
         <span class="ml-2">Nikhil Nayyar</span>
 
-        <!-- help about badges -->
+        <!-- help about badges (static)-->
         <div class="pt-2">
           <div>
             <span class="mcq-question-badge-small badge rounded-circle m-1
-              badge-success">1</span>
+              badge-success">?</span>
             <span style="font-size: 14px;">Answered</span>
             <span class="mcq-question-badge-small badge rounded-circle m-1
-              badge-danger">1</span>
+              badge-danger">?</span>
             <span style="font-size: 14px;">Unanswered</span>
           </div>
           <div>
             <span class="mcq-question-badge-small badge rounded-circle m-1
-              badge-primary">1</span>
+              badge-primary">?</span>
             <span style="font-size: 14px;">Marked</span>
             <span class="mcq-question-badge-small badge rounded-circle m-1
-              badge-secondary">1</span>
+              badge-secondary">?</span>
             <span style="font-size: 14px;">Unvisited</span>
           </div>
         </div>
@@ -134,14 +139,63 @@
         <!-- Question & Instructions button -->
         <div>
           <button type="button" class="btn btn-sm btn-primary mr-2"
-            (click)="loadComponent('Questions')">Question
+            (click)="checkAndLoadComponent('Questions')">Question
             Paper</button>
           <button type="button" class="btn btn-sm btn-primary"
-            (click)="loadComponent('Instructions')">Instructions</button>
+            (click)="checkAndLoadComponent('Instructions')">Instructions</button>
         </div>
         <!-- Submit Test button -->
-        <button type="button" class="btn mt-3 btn-primary mr-2">Submit Test</button>
+        <button type="button" class="btn mt-3 btn-primary mr-2" disabled>Submit Test</button>
       </div>
 
     </div>
   </div>
+
+
+<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Modals @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
+
+
+<!--pause modal-->
+<div class="modal fade" id="pauseModal" tabindex="-1" role="dialog" aria-labelledby="pauseModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <!--
+          modal-header was here
+        -->
+        <div class="modal-body">
+          Are you sure you want to pause the test?
+        </div>
+        <div class="modal-footer">
+          <button type="button" #pauseModalNoBtn class="btn btn-secondary btn-sm" data-dismiss="modal">No</button>
+          <button type="button" class="btn btn-primary btn-sm" (click)="pause()">Yes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--pause "yes" modal trigger (hidden)-->
+<button #pauseSubmitBtn style="display: none" data-toggle="modal" data-target="#pauseSubmitModal"></button>
+
+<!--pause "yes" modal-->
+<div class="modal fade" id="pauseSubmitModal" tabindex="-1" role="dialog" aria-labelledby="pauseSubmitModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Test Paused</h5>
+      </div>
+      <div class="modal-body">
+        <app-overall-test-detail [sections]="mockedTestSections" [questions]="ms.questions">
+        </app-overall-test-detail>
+      </div>
+      <div class="modal-footer">
+        <button type="button"
+          class="btn btn-secondary btn-sm"
+          data-dismiss="modal"
+          [disabled]="mockedTestTime==0?true:false"
+          (click)="start();"
+          >No</button>
+        <button type="button" class="btn btn-primary btn-sm" disabled>Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

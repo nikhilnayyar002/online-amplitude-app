@@ -10,8 +10,13 @@ $page-bg-padding-top:8rem;
 $navbar-height: 53px;
 $nav-height-sections: 36px;
 
-$mcq-question-badge-size:1.5rem;
 $side-width:320px;
+
+//mcq image
+$mcq-page-image-max-width: 100%;
+$mcq-page-image-max-height: 300px;
+$mcq-page-image-margin: 25px 0;
+
 
 @mixin page-default() {
     //height: calc(100vh - #{$navbar-height + $footer-height});

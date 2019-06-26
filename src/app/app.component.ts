@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, ComponentFactoryResolver, ViewChild } from '@angular/core';
+import { Component, ChangeDetectorRef, ComponentFactoryResolver, ViewChild, ElementRef } from '@angular/core';
 import config from 'src/config/config';
 import { PageItem } from './page/page-items';
 import { PageSwitchDirective } from './page-switch.directive';
@@ -7,6 +7,8 @@ import { PageComponent } from './page/page-component.modal';
 import {take} from 'rxjs/operators';
 import { MainService } from './main.service';
 import { QuestionState } from './shared/global';
+import { mockedTest } from './shared/mock';
+import { Section } from './modals/sections';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +17,17 @@ import { QuestionState } from './shared/global';
 })
 export class AppComponent {
 
+  //local config and mock data
   configData = config;
+  mockedTestName = mockedTest.name;
+  mockedTestSections = mockedTest.sections;
+  mockedTestTime = mockedTest.time;
 
-  //let athe side be opened (state management)
-  sideStateOpen = true;
+  //view Elements
+  @ViewChild('pauseModalNoBtn',{static: false}) private pauseModalNoBtn:ElementRef;
+  @ViewChild('pauseSubmitBtn',{static: false}) private pauseSubmitBtn:ElementRef;
+
+  sideStateOpen = true; //let the side be opened
   shortenArrowMargin = (this.sideStateOpen) ? '-10px' : '0px';
   shortenArrowText = (this.sideStateOpen) ? "&rarr;" : "&larr;";
 
@@ -102,6 +111,9 @@ export class AppComponent {
     /* handling media object */
     if (this.matchMediaOBject && this.mediaQueryFunc1)
       this.matchMediaOBject.removeListener(this.mediaQueryFunc1);
+    
+    /** Clear the timer */
+    this.clearTimer(); 
   }
 
   ngOnInit() {
@@ -113,7 +125,15 @@ export class AppComponent {
     /**
      * load questions from backend
      */
-    this.ms.getQuestions();
+    this.ms.getQuestions().subscribe(
+      () => {
+        /**
+         * Start the timer intially.
+         */
+        this.start()
+      },
+      (error: Error) => console.log(error)
+    );
   }
 
 
@@ -144,6 +164,12 @@ export class AppComponent {
 
   }
 
+  checkAndLoadComponent(name:string) {
+    this.loadComponent(name)
+    if(this.mediaMatch) 
+      this.shortenClick()
+  }
+
   /**/
   
   getBadgeType(type:QuestionState) {
@@ -161,15 +187,61 @@ export class AppComponent {
   }
 
   badgeClick(value:string) {
-    this.ms.setQuestionSelected( +value.split(':')[1])
+    let i= +value.split(':')[1]
+    this.ms.checkCurrentQuestion()
+    this.ms.setQuestionSelected(i)
   }
 
+  /**
+   * Error:  When no questions present at
+   *    checkCurrentQuestion(), setQuestionSelected():  
+   * 
+   */
+  sectionClick(index:number) {
+    this.ms.checkCurrentQuestion()
+    this.ms.setQuestionSelected(index)
+    return false
+  }
 
+  returnSectionOfQuestion() {
+    let sectionName='', index= (this.ms.selectedQuestionIndex+1)
+    for(let section of this.mockedTestSections) {
+      if(index >= section.startQ && index <= section.endQ) {
+          sectionName=section.name
+          break
+      }
+    }
+    return sectionName
+  }
 
+  /**
+   * Timer
+   */
+    
+  intervalId = 0;
 
+  clearTimer() { clearInterval(this.intervalId); }
+ 
+  start() { this.countDown(); }
+  stop()  {
+    this.clearTimer();
+  }
+ 
+  private countDown() {
+    this.clearTimer();
+    this.intervalId = window.setInterval(() => {
+      this.mockedTestTime -= 1;
+      if (this.mockedTestTime === 0) {
+        this.pause();
+      }
+    }, 1000);
+  }
 
-
-
+  pause() {
+    this.pauseModalNoBtn.nativeElement.click();
+    this.pauseSubmitBtn.nativeElement.click();
+    this.stop();
+  }
 
 
 }
