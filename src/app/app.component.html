@@ -1,0 +1,147 @@
+
+<!-- main nav bar -->
+<nav [class]="'navbar navbar-expand-lg '+ configData.nav.navType">
+
+  <!-- logo-->
+  <a class="navbar-brand" href="#">
+    <span id="nav-bar-logo">{{configData.company.name}}</span>
+  </a>
+
+
+  <span class="navbar-text ml-auto mr-auto">
+    <!-- time -->
+    <span class="badge badge-primary" style="font-size: 14px;background:
+      #244d79">
+      Time: 1:45:36
+    </span>
+  </span>
+
+  <!-- buttons for Full Screen & Pause-->
+  <form class="form-inline ml-auto">
+    <button type="button" 
+      class="btn btn-sm btn-light mr-2"
+      [style.display]="!mediaMatch?'block':'none'"
+    >
+      Full Screen
+    </button>
+    <button type="button" class="btn btn-sm btn-light">Pause</button>
+  </form>
+</nav>
+
+<!-- show sections drop-down-->
+<ul class="nav nav-tabs">
+
+  <!-- current test name -->
+  <li class="nav-item">
+    <span class="nav-link disabled">L3 Geometry</span>
+  </li>
+
+  <!-- choose section -->
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+      role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#">Action</a>
+    </div>
+  </li>
+</ul>
+
+<!-- main content -->
+<div class="main row no-gutters position-relative">
+
+  <!-- overlay for side toggler-->
+  <div class="overlay overlay-absolute"
+    [style.display]="mediaMatch && sideStateOpen?'block':'none'"></div>
+
+  <!-- page content (question page) -->
+  <div class="page col position-relative">
+    <ng-template appPageSwitch></ng-template>
+  </div>
+
+  <!-- side content (options) -->
+  <div class="col-auto border-left position-relative" style="z-index:15;">
+
+
+    <!-- arrow for switching side content -->
+    <span class="arrow bg-primary text-light"
+      style="left: -20px; padding: 10px 0;overflow: hidden;width: 20px;"
+      (click)="shortenClick()">
+      <span [innerHTML]='shortenArrowText | safeStyle:"dom" '
+        [style.margin-left]="shortenArrowMargin"></span>
+    </span>
+
+    <!-- main side content-->
+    <div class="side" style="top:0; background: white;"
+      [style.display]="sideStateOpen?'block':'none'">
+
+      <!-- side toggler-->
+      <div class="container btn btn-primary side-toggler"
+        [style.display]="'none'">
+        <div class="bar1"></div>
+        <div class="bar2"></div>
+        <div class="bar3"></div>
+      </div>
+
+      <!-- side top content -->
+      <div class="top-content text-white p-2 pl-3 w-100 position-absolute"
+        style="top: 0;left: 0;">
+
+        <!-- user image -->
+        <img class="small-image" src="../assets/no-user.png">
+
+        <!-- user name -->
+        <span class="ml-2">Nikhil Nayyar</span>
+
+        <!-- help about badges -->
+        <div class="pt-2">
+          <div>
+            <span class="mcq-question-badge-small badge rounded-circle m-1
+              badge-success">1</span>
+            <span style="font-size: 14px;">Answered</span>
+            <span class="mcq-question-badge-small badge rounded-circle m-1
+              badge-danger">1</span>
+            <span style="font-size: 14px;">Unanswered</span>
+          </div>
+          <div>
+            <span class="mcq-question-badge-small badge rounded-circle m-1
+              badge-primary">1</span>
+            <span style="font-size: 14px;">Marked</span>
+            <span class="mcq-question-badge-small badge rounded-circle m-1
+              badge-secondary">1</span>
+            <span style="font-size: 14px;">Unvisited</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- mcqs states -->
+      <div id="mcq-states">
+
+        <span *ngFor="let q of ms.questions; let i=index"
+          [class]="'mcq-question-badge badge rounded-circle m-1 ' + getBadgeType(q.state)"
+          [class.selected]="i==ms.selectedQuestionIndex"
+          (click)="badgeClick($event.target.id)"
+          [id]="'mcq-states-badge:'+i"
+        >
+          {{i+1}}
+        </span>
+
+      </div>
+
+      <!-- side bottom content-->
+      <div class="d-flex p-3 position-absolute w-100 bg-white
+        justify-content-center flex-column border-top" style="bottom: 0; left:
+        0;">
+        <!-- Question & Instructions button -->
+        <div>
+          <button type="button" class="btn btn-sm btn-primary mr-2"
+            (click)="loadComponent('Questions')">Question
+            Paper</button>
+          <button type="button" class="btn btn-sm btn-primary"
+            (click)="loadComponent('Instructions')">Instructions</button>
+        </div>
+        <!-- Submit Test button -->
+        <button type="button" class="btn mt-3 btn-primary mr-2">Submit Test</button>
+      </div>
+
+    </div>
+  </div>

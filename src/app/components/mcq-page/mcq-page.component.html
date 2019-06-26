@@ -1,0 +1,22 @@
+  <!--
+    content
+  -->
+  <p>
+    {{question?.content}}
+  </p>
+
+  <!--
+    radio buttons
+  -->
+  <ng-container *ngIf="question">
+      <div *ngFor="let answer of question.answers; let i=index" class="custom-control custom-radio">
+          <input type="radio" [id]="'customRadio'+i" name="customRadio"
+            class="custom-control-input" [value]="i" (click)="onClick()" [(ngModel)]="question.checkedAnswerIndex"
+          >
+          <label class="custom-control-label" [attr.for]="'customRadio'+i">
+            {{answer}}
+          </label>
+      </div>
+  </ng-container>
+  
+

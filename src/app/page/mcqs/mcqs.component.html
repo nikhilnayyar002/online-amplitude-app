@@ -1,0 +1,49 @@
+<div class="main">
+
+    <!--
+      Heading: Eg: Question No. 1, Instructions, Questions
+    -->
+    <div class="bg-secondary text-white p-2 pl-3 w-100 position-absolute d-flex"
+      style="top:0;left: 0;">
+      <!-- main heading -->
+      <span>
+          Question No. 1
+      </span>
+     
+    </div>
+
+
+  <!--
+    Page content.
+    Basically <MCQ component> should be placed inside here.
+  -->
+  <div class="page-content">
+
+    <app-mcq-page *ngIf="ms.selectedQuestionIndex!=undefined"
+      [question]="ms.questions[ms.selectedQuestionIndex]"
+      (emit)="onEmit($event)">
+    </app-mcq-page>
+
+  </div>
+
+  <!--
+    page footer. basically contains buttons.
+  -->
+
+  <div class="d-flex p-3 position-absolute w-100 bg-white border-top"
+    style="bottom:0; left: 0;">
+
+    <button type="button" class="btn btn-sm btn-primary mr-2">Mark for Review &
+      Next</button>
+    <button type="button" class="btn btn-sm btn-primary mr-2">Clear Response</button>
+    <button type="button" class="btn btn-sm btn-primary ml-auto"
+    (click)="ms.saveAndNext(updatedQuestion)"
+    [disabled]="!updatedQuestion?true:false"
+    >
+      Save & Next
+    </button>
+
+  </div>
+
+
+</div>

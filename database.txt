@@ -1,0 +1,25 @@
+
+unset things:
+
+    full screen
+    pause
+    submit
+    sections
+
+
+test:
+    name
+    questions:[
+        {
+        question:
+            content
+            image
+            isComprehension
+            answers[0-4]:[
+            {content}
+            ]
+            state[mk, unmk, unans, ans, mkans ]
+            checkedAnswerIndex[0-3]
+        }
+    ]
+    sections[null]

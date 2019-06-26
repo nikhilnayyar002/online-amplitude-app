@@ -1,0 +1,29 @@
+$primary-color:#007bff; /*bg-primary*/
+$secondary-color:white;
+
+//page
+$page-bg: #000000f2;
+$page-bg-padding:25px;
+$page-bg-padding-top:8rem;
+
+//nav
+$navbar-height: 53px;
+$nav-height-sections: 36px;
+
+$mcq-question-badge-size:1.5rem;
+$side-width:320px;
+
+@mixin page-default() {
+    //height: calc(100vh - #{$navbar-height + $footer-height});
+    background: $page-bg;
+    color:$secondary-color;
+    padding: $page-bg-padding;
+    padding-top: $page-bg-padding-top;
+    transition: all 1s;
+    //@media (max-width: 992px) {
+    //    & {
+    //        height: calc(100vh - #{$navbar-height + $footer-height});
+    //    }
+    //  }
+    
+}
