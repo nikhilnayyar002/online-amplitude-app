@@ -5,7 +5,7 @@ import { QuestionsComponent } from './questions/questions.component';
 import { InstructionsComponent } from './instructions/instructions.component';
 import { McqsComponent } from './mcqs/mcqs.component';
 import { ComponentsModule } from '../components/components.module';
-import { SharedModule } from '../shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({

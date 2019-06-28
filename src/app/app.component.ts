@@ -97,8 +97,6 @@ export class AppComponent {
     this.matchMediaOBject = window.matchMedia("(max-width: 900px)");
     this.matchMediaOBject.addListener(this.mediaQueryFunc1);
     setTimeout(() => this.mediaQueryFunc1(this.matchMediaOBject), 0)
-    
-    /* */
   }
 
   ngOnDestroy(): void {
@@ -159,14 +157,18 @@ export class AppComponent {
 
   }
 
+  /**
+   * introduced for small screen. So that on loading a different page the side
+   * gets closed.
+   * 
+   * */
   checkAndLoadComponent(name:string) {
     this.loadComponent(name)
     if(this.mediaMatch) 
       this.shortenClick()
   }
 
-  /**/
-  
+
   getBadgeType(type:QuestionState) {
     switch(type) {
       case QuestionState.Answered: return "badge-success"
