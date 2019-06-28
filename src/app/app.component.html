@@ -1,4 +1,3 @@
-
 <!-- main nav bar -->
 <nav [class]="'navbar navbar-expand-lg '+ configData.nav.navType">
 
@@ -7,26 +6,20 @@
     <span id="nav-bar-logo">{{configData.company.name}}</span>
   </a>
 
-
   <span class="navbar-text ml-auto mr-auto">
     <!-- time -->
     <span class="badge badge-primary" style="font-size: 14px;background:
       #244d79">
-      Time: {{mockedTestTime | timer}}
+      Time: {{ms.mockedTest?.time | timer}}
     </span>
   </span>
 
   <!-- buttons for Full Screen & Pause-->
   <form class="form-inline ml-auto">
-    <button type="button" 
-      class="btn btn-sm btn-light mr-2"
-      [style.display]="!mediaMatch?'block':'none'"
-      disabled
-    >
+    <button type="button" class="btn btn-sm btn-light mr-2" [style.display]="!mediaMatch?'block':'none'" disabled>
       Full Screen
     </button>
-    <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#pauseModal"
-    >Pause</button>
+    <button type="button" class="btn btn-sm btn-light" data-toggle="modal" data-target="#pauseModal">Pause</button>
   </form>
 </nav>
 
@@ -35,61 +28,65 @@
 
   <!-- current test name -->
   <li class="nav-item">
-    <span class="nav-link disabled">{{mockedTestName}}</span>
+    <span class="nav-link disabled">{{ms.mockedTest?.name}}</span>
   </li>
 
-  <!-- choose section -->
-  <li class="nav-item dropdown">
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
-      role="button" aria-haspopup="true" aria-expanded="false">{{returnSectionOfQuestion()}}</a>
-    <div class="dropdown-menu">
-      <a *ngFor="let section of mockedTestSections" class="dropdown-item"
-        (click)="sectionClick(section.startQ-1)">
-        {{section.name}}
-      </a>
-    </div>
-  </li>
+  <!-- suppressing error (dev only)-->
+  <ng-container *ngIf="ms.mockedTest">
+    <!-- choose section -->
+    <li class="nav-item dropdown">
+
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+        aria-expanded="false">{{returnSectionOfQuestion()}}</a>
+      <div class="dropdown-menu">
+
+        <a *ngFor="let section of ms.mockedTest.sections" class="dropdown-item"
+          (click)="sectionClick(section.startQ-1)">
+          {{section.name}}
+        </a>
+
+
+      </div>
+    </li>
+  </ng-container>
 </ul>
 
 <!-- main content -->
 <div class="main row no-gutters position-relative">
 
   <!-- overlay for side toggler-->
-  <div class="overlay overlay-absolute"
-    [style.display]="mediaMatch && sideStateOpen?'block':'none'"></div>
+  <div class="overlay overlay-absolute" [style.display]="mediaMatch && sideStateOpen?'block':'none'">
+  </div>
 
   <!-- page content (question page) -->
   <div class="col position-relative">
-    <ng-template appPageSwitch></ng-template>
+    <ng-container appPageSwitch></ng-container>
   </div>
 
   <!-- side content -->
   <div class="col-auto border-left position-relative" style="z-index:15;">
 
-
-    <!-- arrow for switching side content -->
-    <span class="arrow bg-primary text-light"
-      style="left: -20px; padding: 10px 0;overflow: hidden;width: 20px;"
+    <!-- 
+      arrow for switching side content
+      also added inline styling
+     -->
+    <span class="arrow bg-primary text-light" style="left: -20px; padding: 10px 0;overflow: hidden;width: 20px;"
       (click)="shortenClick()">
-      <span [innerHTML]='shortenArrowText | safeStyle:"dom" '
-        [style.margin-left]="shortenArrowMargin"></span>
+      <span [innerHTML]='shortenArrowText | safeStyle:"dom" ' [style.margin-left]="shortenArrowMargin"></span>
     </span>
 
     <!-- main side content-->
-    <div class="side" style="top:0; background: white;"
-      [style.display]="sideStateOpen?'block':'none'">
+    <div class="side" style="top:0; background: white;" [style.display]="sideStateOpen?'block':'none'">
 
       <!-- X- side toggler -->
-      <div class="container btn btn-primary side-toggler"
-        [style.display]="'none'">
+      <div class="container btn btn-primary side-toggler" [style.display]="'none'">
         <div class="bar1"></div>
         <div class="bar2"></div>
         <div class="bar3"></div>
       </div>
 
       <!-- side top content -->
-      <div class="top-content text-white p-2 pl-3 w-100 position-absolute"
-        style="top: 0;left: 0;">
+      <div class="top-content text-white p-2 pl-3 w-100 position-absolute" style="top: 0;left: 0;">
 
         <!-- user image -->
         <img class="small-image" src="../assets/no-user.png">
@@ -121,14 +118,15 @@
       <!-- mcqs states -->
       <div id="mcq-states">
 
-        <span *ngFor="let q of ms.questions; let i=index"
-          [class]="'mcq-question-badge badge rounded-circle m-1 ' + getBadgeType(q.state)"
-          [class.selected]="i==ms.selectedQuestionIndex"
-          (click)="badgeClick($event.target.id)"
-          [id]="'mcq-states-badge:'+i"
-        >
-          {{i+1}}
-        </span>
+        <!-- suppressing error (dev only)-->
+        <ng-container *ngIf="ms.mockedTest">
+          <span *ngFor="let q of ms.mockedTest.questions; let i=index"
+            [class]="'mcq-question-badge badge rounded-circle m-1 selected ' + getBadgeType(q.state)"
+            [class.selected]="i==ms.selectedQuestionIndex" (click)="badgeClick($event.target.id)"
+            [id]="'mcq-states-badge:'+i">
+            {{i+1}}
+          </span>
+        </ng-container>
 
       </div>
 
@@ -149,51 +147,59 @@
       </div>
 
     </div>
-  </div>
 
+  </div>
+</div>
 
 <!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ Modals @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@-->
 
 
 <!--pause modal-->
-<div class="modal fade" id="pauseModal" tabindex="-1" role="dialog" aria-labelledby="pauseModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <!--
+<div class="modal fade" id="pauseModal" tabindex="-1" role="dialog" aria-labelledby="pauseModalLabel" aria-hidden="true"
+  data-backdrop="static" data-keyboard="false">
+  <!--  -->
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!--
           modal-header was here
         -->
-        <div class="modal-body">
-          Are you sure you want to pause the test?
-        </div>
-        <div class="modal-footer">
-          <button type="button" #pauseModalNoBtn class="btn btn-secondary btn-sm" data-dismiss="modal">No</button>
-          <button type="button" class="btn btn-primary btn-sm" (click)="pause()">Yes</button>
-        </div>
+      <div class="modal-body">
+        Are you sure you want to pause the test?
+      </div>
+      <div class="modal-footer">
+        <button type="button" #pauseModalNoBtn class="btn btn-secondary btn-sm" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="pause()">Yes</button>
       </div>
     </div>
+  </div>
 </div>
 
 <!--pause "yes" modal trigger (hidden)-->
 <button #pauseSubmitBtn style="display: none" data-toggle="modal" data-target="#pauseSubmitModal"></button>
 
 <!--pause "yes" modal-->
-<div class="modal fade" id="pauseSubmitModal" tabindex="-1" role="dialog" aria-labelledby="pauseSubmitModalLabel" aria-hidden="true">
+<div class="modal fade" id="pauseSubmitModal" tabindex="-1" role="dialog" aria-labelledby="pauseSubmitModalLabel"
+  aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <!--  -->
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Test Paused</h5>
       </div>
-      <div class="modal-body">
-        <app-overall-test-detail [sections]="mockedTestSections" [questions]="ms.questions">
-        </app-overall-test-detail>
-      </div>
+      <!-- suppressing error (dev only)-->
+      <ng-container *ngIf="ms.mockedTest">
+        <div class="modal-body">
+          <app-overall-test-detail [sections]="ms.mockedTest.sections" [questions]="ms.mockedTest.questions">
+          </app-overall-test-detail>
+        </div>
+      </ng-container>
+
       <div class="modal-footer">
-        <button type="button"
-          class="btn btn-secondary btn-sm"
-          data-dismiss="modal"
-          [disabled]="mockedTestTime==0?true:false"
-          (click)="start();"
-          >No</button>
+        <!-- suppressing error (dev only)-->
+        <ng-container *ngIf="ms.mockedTest">
+          <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"
+            [disabled]="ms.mockedTest.time==0?true:false" (click)="start();">No</button>
+        </ng-container>
         <button type="button" class="btn btn-primary btn-sm" disabled>Submit</button>
       </div>
     </div>

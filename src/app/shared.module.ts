@@ -14,4 +14,4 @@ import { TimerPipe } from './timer.pipe';
     SafeStylePipe, TimerPipe
   ]
 })
-export class MymoduleModule { }
+export class  SharedModule { }

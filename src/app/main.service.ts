@@ -5,17 +5,15 @@ import { Question } from './modals/question';
 import config from 'src/config/config';
 import { catchError, tap } from 'rxjs/operators';
 import { QuestionState } from './shared/global';
+import { Test } from './modals/test';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MainService {
 
-  questions: Question[];
+  mockedTest:Test;
   selectedQuestionIndex: number;
-  error: Error;
-
-
 
   constructor(private http: HttpClient) { }
 
@@ -37,14 +35,14 @@ export class MainService {
   /**
    * Intially called. Fetches questions and sets the questions array locally
    */
-  getQuestions(): Observable<Question[]> {
-    return this.http.get<Question[]>(config.api.baseURL)
+  getTest(): Observable<Test> {
+    return this.http.get<Test>(config.api.baseURL +'/1')
       .pipe(
-        tap((questions: Question[]) => {
+        tap((test:Test) => {
           /**
            * initialize the stage
            */
-          this.questions = questions;
+          this.mockedTest=test
           this.selectedQuestionIndex = 0;
         }),
         catchError(this.handleError)
@@ -65,7 +63,7 @@ export class MainService {
    * 
    */
   getNextQuestionIndex(): number {
-    return (this.selectedQuestionIndex < this.questions.length - 1) ?
+    return (this.selectedQuestionIndex < this.mockedTest.questions.length - 1) ?
       (this.selectedQuestionIndex + 1) : 0
   }
 
@@ -74,7 +72,7 @@ export class MainService {
    * This method is to be called before @setQuestionSelected 
    */
   checkCurrentQuestion() {
-    let currentQ = this.questions[this.selectedQuestionIndex];
+    let currentQ = this.mockedTest.questions[this.selectedQuestionIndex];
     /** Added for next button basically */
     if (currentQ.checkedAnswerIndex != null) {
       if (currentQ.state == QuestionState.Marked)
@@ -92,7 +90,7 @@ export class MainService {
   }
 
   setQuestionState(state:QuestionState) {
-    this.questions[this.selectedQuestionIndex].state=state;
+    this.mockedTest.questions[this.selectedQuestionIndex].state=state;
   }
 
   /**
@@ -100,14 +98,14 @@ export class MainService {
    * Does not set for @Markedanswered as @checkCurrentQuestion handles it.
    */
   markCurrentQuestion() {
-    this.questions[this.selectedQuestionIndex].state = QuestionState.Marked;
+    this.mockedTest.questions[this.selectedQuestionIndex].state = QuestionState.Marked;
   }
 
   /**
    * marks the question as @Unvisited and clears it @checkedAnswerIndex property
    */
   clearCurrentQuestion() {
-    let q = this.questions[this.selectedQuestionIndex];
+    let q = this.mockedTest.questions[this.selectedQuestionIndex];
     q.state = QuestionState.Unvisited;
     q.checkedAnswerIndex = null
   }
@@ -131,7 +129,7 @@ export class MainService {
       catchError(this.handleError)
     )
       .subscribe(() => {
-        this.questions[this.selectedQuestionIndex].checkedAnswerIndex = updatedQuestion.checkedAnswerIndex
+        this.mockedTest.questions[this.selectedQuestionIndex].checkedAnswerIndex = updatedQuestion.checkedAnswerIndex
         /**
          *  X- Whole array will be reupdated on every click on radio button 
          *  Since array items remain same, only Q updates therefore
@@ -139,9 +137,9 @@ export class MainService {
          */
         //this.questions[this.selectedQuestionIndex]= {...updatedQuestion}
         //this.questions=this.questions.slice();
-        this.questions[this.selectedQuestionIndex] = updatedQuestion;
+        this.mockedTest.questions[this.selectedQuestionIndex] = updatedQuestion;
       },
-        (error: Error) => this.error = error
+        (error: Error) => console.log(error)
       );
   }
 

@@ -54,13 +54,16 @@ const mockedQuestions:Array<Question>=[
         
 ];
 
-export const mockedTest:Test={
-    name:"mockedTest",
-    questions:mockedQuestions,
-    sections:[
-        { name:"Section A", startQ:1, endQ:2},
-        { name:"Section B", startQ:3, endQ:3},        
-    ],
-    time:120
-};
+export const mockedTests:Array<Test>=[
+    {    
+        id:1,
+        name:"mockedTest",
+        questions:mockedQuestions,
+        sections:[
+            { name:"Section A", startQ:1, endQ:2},
+            { name:"Section B", startQ:3, endQ:3},        
+        ],
+        time:120
+    }
+];
 

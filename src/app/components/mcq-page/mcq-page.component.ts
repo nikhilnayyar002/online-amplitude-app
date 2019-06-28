@@ -16,12 +16,6 @@ export class McqPageComponent {
     this.questionEmitEvent.emit(this.question)
   }
 
-  ngOnChanges(): void {
-    this.questionEmitEvent.emit(null)
-  }
-
   constructor() { }
-
-
 
 }

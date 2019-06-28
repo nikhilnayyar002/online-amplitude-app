@@ -7,8 +7,6 @@ import { PageComponent } from './page/page-component.modal';
 import {take} from 'rxjs/operators';
 import { MainService } from './main.service';
 import { QuestionState } from './shared/global';
-import { mockedTest } from './shared/mock';
-import { Section } from './modals/sections';
 
 @Component({
   selector: 'app-root',
@@ -19,9 +17,6 @@ export class AppComponent {
 
   //local config and mock data
   configData = config;
-  mockedTestName = mockedTest.name;
-  mockedTestSections = mockedTest.sections;
-  mockedTestTime = mockedTest.time;
 
   //view Elements
   @ViewChild('pauseModalNoBtn',{static: false}) private pauseModalNoBtn:ElementRef;
@@ -125,7 +120,7 @@ export class AppComponent {
     /**
      * load questions from backend
      */
-    this.ms.getQuestions().subscribe(
+    this.ms.getTest().subscribe(
       () => {
         /**
          * Start the timer intially.
@@ -205,7 +200,7 @@ export class AppComponent {
 
   returnSectionOfQuestion() {
     let sectionName='', index= (this.ms.selectedQuestionIndex+1)
-    for(let section of this.mockedTestSections) {
+    for(let section of this.ms.mockedTest.sections) {
       if(index >= section.startQ && index <= section.endQ) {
           sectionName=section.name
           break
@@ -230,8 +225,8 @@ export class AppComponent {
   private countDown() {
     this.clearTimer();
     this.intervalId = window.setInterval(() => {
-      this.mockedTestTime -= 1;
-      if (this.mockedTestTime === 0) {
+      this.ms.mockedTest.time -= 1;
+      if ( this.ms.mockedTest.time === 0) {
         this.pause();
       }
     }, 1000);

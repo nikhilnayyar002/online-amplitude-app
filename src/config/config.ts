@@ -4,7 +4,7 @@ let config = {
         navType : " navbar-dark bg-primary",
     },
     api:{
-        baseURL:"api/questions"
+        baseURL:"api/tests"
     },
     company:{
         name:"Test Bot"

@@ -18,7 +18,7 @@ export class McqsComponent extends PageComponent{
   }
 
   onEmit(question:Question) {
-    if(question)  this.ms.updateQuestion(question)
+    this.ms.updateQuestion(question)
   }
 
   next() {

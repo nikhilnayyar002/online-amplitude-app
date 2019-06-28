@@ -12,7 +12,7 @@ import { InstructionsComponent } from './page/instructions/instructions.componen
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 import { HttpClientModule } from '@angular/common/http';
-import { MymoduleModule } from './mymodule.module';
+import { SharedModule } from './shared.module';
 import { ComponentsModule } from './components/components.module';
 
 @NgModule({
@@ -25,7 +25,7 @@ import { ComponentsModule } from './components/components.module';
     AppRoutingModule,
     PageModule,
     ComponentsModule,
-    MymoduleModule,
+    SharedModule,
     HttpClientModule,
 
     /*
