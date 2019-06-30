@@ -16,18 +16,16 @@
       Basically <MCQ component> should be placed inside here.
     -->
   <!-- suppressing error (dev only)-->
-  <ng-container *ngIf="ms.mockedTest">
     <div class="page-content">
 
       <ul class="list-unstyled">
-        <li *ngFor="let question of ms.mockedTest.questions;let i=index">
+        <li *ngFor="let question of questions;let i=index">
           <p class="font-weight-bold">Question No. {{i+1}}</p>
           <p [innerHTML]="question.content | safeStyle:'dom'"></p>
         </li>
       </ul>
 
     </div>
-  </ng-container>
   <!--
       page footer. basically contains buttons.
     -->

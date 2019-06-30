@@ -4,10 +4,7 @@
 <div class="bg-secondary text-white p-2 pl-3 w-100 position-absolute d-flex" style="top:0;left: 0;z-index: 1">
   <!-- main heading -->
   <span>
-    Question No. {{
-    ms.selectedQuestionIndex!=null?
-    ms.selectedQuestionIndex + 1:''
-    }}
+    Question No. {{  index!=null? index + 1:''  }}
   </span>
 
   <div class="bg-light text-dark px-1 ml-auto">
@@ -25,11 +22,9 @@
     Basically <MCQ component> should be placed inside here.
   -->
 <!-- suppressing error (dev only)-->
-<ng-container *ngIf="ms.mockedTest">
-  <app-mcq-page *ngIf="ms.selectedQuestionIndex!=undefined"
-    [question]="ms.mockedTest.questions[ms.selectedQuestionIndex]" (emit)="onEmit($event)">
+  <app-mcq-page *ngIf="index!=undefined && questions.length"
+    [question]="questions[index]" (emit)="onEmit($event)">
   </app-mcq-page>
-</ng-container>
 
 <!--
     page footer. basically contains buttons.

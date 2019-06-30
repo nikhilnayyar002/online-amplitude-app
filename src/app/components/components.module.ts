@@ -13,6 +13,6 @@ import { McqStatesComponent } from './mcq-states/mcq-states.component';
     FormsModule,
     SharedModule
   ],
-  exports:[McqPageComponent, OverallTestDetailComponent]
+  exports:[McqPageComponent, OverallTestDetailComponent, McqStatesComponent]
 })
 export class ComponentsModule { }

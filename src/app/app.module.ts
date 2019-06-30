@@ -1,10 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PageModule } from './page/page.module';
-import { SafeStylePipe } from './shared/safe-style.pipe';
 import { PageSwitchDirective } from './page-switch.directive';
 import { McqsComponent } from './page/mcqs/mcqs.component';
 import { QuestionsComponent } from './page/questions/questions.component';
@@ -14,6 +12,10 @@ import { InMemoryDataService } from './in-memory-data.service';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { ComponentsModule } from './components/components.module';
+import { StoreModule } from '@ngrx/store';
+import * as TestReducer from './state/state.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { TestEffect } from './state/state.effects';
 
 @NgModule({
   declarations: [
@@ -33,8 +35,15 @@ import { ComponentsModule } from './components/components.module';
     */
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService
-    )
-
+    ),
+    /**
+     * Store (two states): test(Test), index(number)
+     */
+    StoreModule.forRoot({test: TestReducer.tReducer, index:TestReducer.Ireducer}),
+    /**
+     * Effects
+     */
+    EffectsModule.forRoot([TestEffect])
   ],
   providers: [],
   bootstrap: [AppComponent],
