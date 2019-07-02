@@ -63,7 +63,7 @@ export const mockedTests:Array<Test>=[
             { name:"Section A", startQ:1, endQ:2},
             { name:"Section B", startQ:3, endQ:3},        
         ],
-        time:120
+        time:10
     }
 ];
 

@@ -21,6 +21,7 @@ export class AppComponent {
   //new variables
   test: Test ;
   index: number;
+  isTestOver:boolean=false;
 
   //local config
   configData = config;
@@ -74,7 +75,10 @@ export class AppComponent {
       this.test=test
       if (test.time) this.start()
     })
-    this.store.pipe(select((state)=>state.index)).subscribe((index)=> this.index=index)
+    this.store.pipe(select((state)=>state.other)).subscribe((other)=> {
+      this.index=other.index;
+      this.isTestOver=other.isTestOver;
+    })
   }
 
 
@@ -156,6 +160,7 @@ export class AppComponent {
     this.intervalId = window.setInterval(() => {
       this.test.time -= 1;
       if (this.test.time === 0) {
+        this.store.dispatch(TestActions.TestOver());
         this.pause();
       }
     }, 1000);

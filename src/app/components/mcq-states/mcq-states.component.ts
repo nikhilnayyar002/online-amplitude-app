@@ -16,6 +16,7 @@ export class McqStatesComponent {
 
   questions:Question[];
   index:number;
+  private isTestOver=false;
   
   subs=new SubSink();
 
@@ -23,7 +24,10 @@ export class McqStatesComponent {
     private store:Store<GlobalState>
   ) { 
     this.subs.add(
-      store.pipe(select(state=>state.index)).subscribe(index => this.index=index)
+      store.pipe(select(state=>state.other)).subscribe(other => {
+        this.index=other.index;
+        this.isTestOver=other.isTestOver;
+      })
     )
     this.subs.add(
       this.store.pipe(select(state=>state.test.questions)).subscribe((questions)=>this.questions=questions)
@@ -57,6 +61,7 @@ export class McqStatesComponent {
    * click the badge and get a question selected.
    */
   badgeClick(value: string) {
+    if(this.isTestOver) return
     let i = +value.split(':')[1]
     let state=checkAndGetQuestionState(this.questions[this.index])
     this.store.dispatch(SetQuestionState({state:state, index:this.index}))

@@ -1,6 +1,11 @@
 import { Test } from '../modals/test';
 
+export interface TestOtherState {
+    index:number;
+    isTestOver:boolean;
+}
+
 export interface GlobalState {
     test:Test;
-    index:number;
+    other:TestOtherState;
 }

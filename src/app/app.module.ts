@@ -39,7 +39,7 @@ import { TestEffect } from './state/state.effects';
     /**
      * Store (two states): test(Test), index(number)
      */
-    StoreModule.forRoot({test: TestReducer.tReducer, index:TestReducer.Ireducer}),
+    StoreModule.forRoot({test: TestReducer.tReducer, other:TestReducer.oReducer}),
     /**
      * Effects
      */

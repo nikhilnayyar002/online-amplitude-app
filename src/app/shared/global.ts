@@ -117,10 +117,14 @@ export function getNextQuestionIndex(questions: Question[], index: number): numb
 
 /**
  * this is what we do when test is not fetched
+ * Also this is function is called when test is over. see @isTestOverNotif parameter.
  */
-export function onTestNotFetched(error:string) {
-  (<HTMLElement>document.querySelector("#error-message")).innerText=error;
-  (<HTMLButtonElement>document.querySelector("#error-btn")).click();
+export function onTestNotFetched(error:string, isTestOverNotif=false) {
+  if(!isTestOverNotif) {
+    (<HTMLElement>document.querySelector("#error-message")).innerText=error;
+    (<HTMLButtonElement>document.querySelector("#error-btn")).click();
+  }
   let btns=document.querySelectorAll('[type="button"]')
   btns.forEach((btn)=> (<HTMLButtonElement>btn).disabled=true)
+  console.log(1)
 }

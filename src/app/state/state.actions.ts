@@ -54,9 +54,17 @@ export const SetQuestion =createAction(
   props<{question:Question, index:number}>()
 )
 
+export const TestOver =createAction(
+  '[Test] Over'
+)
+
+
+
+
+
 /** *************************************** Error Actions ******************** */
 
-export const GetError = createAction(
-  '[Error] Get'
-);
+// export const GetError = createAction(
+//   '[Error] Get'
+// );
 

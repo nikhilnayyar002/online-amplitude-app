@@ -45,7 +45,7 @@
   </li>
 
     <!-- choose section -->
-    <li class="nav-item dropdown">
+    <li class="nav-item dropdown" >
       <a
         class="nav-link dropdown-toggle"
         data-toggle="dropdown"
@@ -53,9 +53,10 @@
         role="button"
         aria-haspopup="true"
         aria-expanded="false"
+        [class.disabled]="isTestOver"
         >{{ returnSectionOfQuestion() }}</a
       >
-      <div class="dropdown-menu">
+      <div class="dropdown-menu" *ngIf="!isTestOver">
         <a
           *ngFor="let section of test.sections"
           class="dropdown-item"

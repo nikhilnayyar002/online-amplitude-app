@@ -1,7 +1,8 @@
 import { Test } from '../modals/test';
 import * as TestActions from "./state.actions";
 import { createReducer, on, Action } from '@ngrx/store';
-import { QuestionState } from '../shared/global';
+import { QuestionState, onTestNotFetched } from '../shared/global';
+import { TestOtherState } from './global.state';
 
 export const initialTestState:Test = {
     name:'',
@@ -39,13 +40,24 @@ export function tReducer (state:Test|undefined,action:Action) {
 /**
  * index of currently selected question 
  */
-const intialIndexState=0;
+const intialOtherState:TestOtherState={
+    index:0,
+    isTestOver:false
+};
 
-const indexReducer = createReducer(
-    intialIndexState,
-    on(TestActions.SetIndex,(state,action)=>(action.index))
+const otherStateReducer = createReducer(
+    intialOtherState,
+    on(TestActions.SetIndex,(state,action)=>({...state,index:action.index})),
+    on(TestActions.TestOver,(state)=>{
+        /** Note this the function name has not the usual meaning
+         *  it was created for error. but is reusable for
+         *  test over purpose also by sending parameter as (null, true)
+         */
+        onTestNotFetched(null,true);
+        return {...state,isTestOver:true}
+    }) 
 );
 
-export function Ireducer (state:number|undefined,action:Action) {
-    return indexReducer(state,action)
+export function oReducer (state:TestOtherState|undefined,action:Action) {
+    return otherStateReducer(state,action)
 }

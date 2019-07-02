@@ -27,7 +27,7 @@ export class McqsComponent extends PageComponent{
   ) { 
     super()
     this.subs.add(
-      store.pipe(select(state=>state.index)).subscribe(index => this.index=index)
+      store.pipe(select(state=>state.other.index)).subscribe(index => this.index=index)
     )
     this.subs.add(
       this.store.pipe(select(state=>state.test.questions)).subscribe((questions)=>this.questions=questions)
