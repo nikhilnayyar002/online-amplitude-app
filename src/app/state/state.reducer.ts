@@ -28,9 +28,18 @@ const testReducer = createReducer(
          * Anywhere this primitive property i referenced, there changes will be reflected
          * For eg: the checkbox value property in mcq component 
          */
-        state.questions[action.index]=action.question
+        state.questions[action.question.id]=action.question
         return state
-    })
+    }),
+    on(TestActions.PauseTest, (state,action)=> {
+        /**
+         * Actually the question.checkedAnswerIndex primitive property has changed
+         * Anywhere this primitive property i referenced, there changes will be reflected
+         * For eg: the checkbox value property in mcq component 
+         */
+        state.time=action.time
+        return state
+    }),
 );
 
 export function tReducer (state:Test|undefined,action:Action) {

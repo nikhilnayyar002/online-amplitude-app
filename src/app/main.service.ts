@@ -37,32 +37,28 @@ export class MainService {
       )
   }
 
-  /**
-   * 
-   * @param updatedQuestion 
-   * It is the question containing modified "checkedAnswerIndex" property.
-   * 
-   * The method currently updates the mocked Array @question having id same
-   * as that of @updatedQuestion .
-   * 
-   */
-  updateQuestion(updatedQuestion: Question) {
+  updateQuestion(testID:number, questionID: number, optionIndex:number) {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
-    /**
-     * Actually this code below might work currently
-     * in case of in-memory-api
-     */
-    console.log(updatedQuestion.checkedAnswerIndex)
-    let url=config.api.base + '/tests/1/questions/'+ updatedQuestion.id;
-    return this.http.post<{index:number}>(
-      url,
-      { index:updatedQuestion.checkedAnswerIndex }, 
-      httpOptions
+    let url = config.api.base + '/tests/' + testID +'/questions/' + questionID;
+    return this.http.post<{index:number}>( url, { data:optionIndex},  httpOptions).pipe(
+      catchError(this.handleError)
     );
   }
+
+  updateTime(testID:number, time:number) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    };
+
+    let url = config.api.base + '/tests/' + testID +'/time';
+    return this.http.post<{index:number}>( url, { data:time},  httpOptions).pipe(
+      catchError(this.handleError)
+    );
+  }
+
 
   private handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {

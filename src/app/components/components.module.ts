@@ -11,7 +11,7 @@ import { McqStatesComponent } from './mcq-states/mcq-states.component';
   imports: [
     CommonModule,
     FormsModule,
-    SharedModule
+    SharedModule,
   ],
   exports:[McqPageComponent, OverallTestDetailComponent, McqStatesComponent]
 })

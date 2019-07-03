@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Question } from 'src/app/modals/question';
+import { FormGroup, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-mcq-page',
@@ -11,13 +12,20 @@ export class McqPageComponent {
 
   @Input() question:Question;
   @Output('emit') questionEmitEvent= new EventEmitter<Question>();
-  data=null;
 
-  onClick(event) {
-    console.log("index: ",event)
+  onClick(index) {
+    /**
+     * first of all the 1st line of this function is because
+     * @checkedAnswerIndex was not seem to be updated in here.
+     * You can also simple do
+     *    this.question.checkedAnswerIndex=index
+     * But the line below seems to be more meaningfull.
+     */
+    this.question={...this.question, checkedAnswerIndex:index }
+    //emit the new question
     this.questionEmitEvent.emit(this.question)
   }
 
-  constructor() { }
+
 
 }

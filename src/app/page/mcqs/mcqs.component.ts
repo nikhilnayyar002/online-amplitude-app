@@ -6,7 +6,7 @@ import { QuestionState, checkAndGetQuestionState, getNextQuestionIndex } from 's
 import { Subscription } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 import { GlobalState } from 'src/app/state/global.state';
-import { SetQuestionState, SetIndex, UpdateQuestion } from 'src/app/state/state.actions';
+import { SetQuestionState, SetIndex, UpdateQuestion, ClearResponse } from 'src/app/state/state.actions';
 import { SubSink } from 'subsink';
 
 @Component({
@@ -39,7 +39,7 @@ export class McqsComponent extends PageComponent{
   }
 
   onEmit(question:Question) {
-   this.store.dispatch(UpdateQuestion({question:question, index:this.index}))
+   this.store.dispatch(UpdateQuestion({question:question}))
   }
 
   next() {
@@ -57,6 +57,7 @@ export class McqsComponent extends PageComponent{
   }
 
   clear() {
+    this.store.dispatch(ClearResponse({question:this.questions[this.index]})) 
     this.store.dispatch(SetQuestionState({state:QuestionState.Unvisited, index:this.index})) 
   }
 

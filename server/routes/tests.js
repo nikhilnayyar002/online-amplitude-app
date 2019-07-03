@@ -24,16 +24,32 @@ router.get('/:id', function(req, res, next) {
 router.post('/:id/questions/:qid', function(req, res, next) {
   let testID=req.params.id;
   let questionID=req.params.qid;
-  console.log(req.body)
 
   TestModal.findById(testID, function (err, test) {
     if (err) { return next(err); }
-    test.questions[questionID].checkedAnswerIndex=null;
+    test.questions[questionID].checkedAnswerIndex=req.body.data;
     test.save(function (err) {
       if (err) { return next(err); }
-      // Successful - redirect to new author record.
+      // Successful
       res.json({status:"Successful"})
     });
   })
 });
+
+
+router.post('/:id/time', function(req, res, next) {
+  let testID=req.params.id;
+
+  TestModal.findById(testID, function (err, test) {
+    if (err) { return next(err); }
+    test.time=req.body.data;
+    test.save(function (err) {
+      if (err) { return next(err); }
+      // Successful
+      res.json({status:"Successful"})
+    });
+  })
+});
+
+
 module.exports = router;

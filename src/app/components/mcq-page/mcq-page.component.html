@@ -20,16 +20,14 @@
 
       <!--radio buttons-->
       <div *ngFor="let answer of question.answers; let i=index"
-        class="custom-control"
-        (click)="onClick($event)"
-      >
-        <input type="radio" [id]="'customRadio'+i" name="customRadio"
-          class="custom-control-input" [(ngModel)]="question.checkedAnswerIndex"
-        >
-        <label class="custom-control-label" [attr.for]="'customRadio'+i">
-          {{answer}}
-        </label>
-      </div>
+      class="custom-control custom-radio">
+      <input type="radio" [id]="'customRadio'+i" name="customRadio"
+        class="custom-control-input" [value]="i" (click)="onClick(i)"
+        [(ngModel)]="question.checkedAnswerIndex">
+      <label class="custom-control-label" [attr.for]="'customRadio'+i">
+        {{answer}}
+      </label>
+    </div>
 
     </div>
   </div>
@@ -46,10 +44,9 @@
 
     <!--radio buttons-->
     <div *ngFor="let answer of question.answers; let i=index"
-      class="custom-control
-      custom-radio">
+      class="custom-control custom-radio">
       <input type="radio" [id]="'customRadio'+i" name="customRadio"
-        class="custom-control-input" [value]="i" (click)="onClick()"
+        class="custom-control-input" [value]="i" (click)="onClick(i)"
         [(ngModel)]="question.checkedAnswerIndex">
       <label class="custom-control-label" [attr.for]="'customRadio'+i">
         {{answer}}

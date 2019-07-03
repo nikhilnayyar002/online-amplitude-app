@@ -43,23 +43,38 @@ export const SetIndex = createAction(
  */
 export const UpdateQuestion =createAction(
   '[Question] Update',
-  props<{question:Question, index:number}>()
+  props<{question:Question}>()
 )
 
 /**
- * set the question in store. For eg. updating options
+ * set the questionState in store.
  */
 export const SetQuestion =createAction(
   '[Question] Set',
-  props<{question:Question, index:number}>()
+  props<{question:Question}>()
 )
 
 export const TestOver =createAction(
   '[Test] Over'
 )
 
+/**
+ * Clear your answer will also
+ * should also make changes in backend 
+ */
+export const ClearResponse =createAction(
+  '[Question] Update Server',
+  props<{question:Question}>()
+)
 
-
+export const PauseTest =createAction(
+  '[Test] Pause',
+  props<{time:number}>()
+)
+export const PauseTestServer =createAction(
+  '[Test] Pause Server',
+  props<{time:number}>()
+)
 
 
 /** *************************************** Error Actions ******************** */

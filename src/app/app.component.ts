@@ -175,9 +175,11 @@ export class AppComponent {
   @ViewChild('pauseSubmitBtn', { static: false }) private pauseSubmitBtn: ElementRef;
 
   pause() {
+    console.log(2)
     this.pauseModalNoBtn.nativeElement.click();
     this.pauseSubmitBtn.nativeElement.click();
     this.stop();
+    this.store.dispatch(TestActions.PauseTestServer({time:this.test.time}))
   }
 
   /**
