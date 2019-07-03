@@ -126,5 +126,37 @@ export function onTestNotFetched(error:string, isTestOverNotif=false) {
   }
   let btns=document.querySelectorAll('[type="button"]')
   btns.forEach((btn)=> (<HTMLButtonElement>btn).disabled=true)
-  console.log(1)
+}
+
+/**
+ * Toggle Full Screen
+ */
+function openFullscreen(elem:any) {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen();
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen();
+  }
+}
+
+function closeFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if ((<any>document).mozCancelFullScreen) {
+    (<any>document).mozCancelFullScreen();
+  } else if ((<any>document).webkitExitFullscreen) {
+    (<any>document).webkitExitFullscreen();
+  } else if ((<any>document).msExitFullscreen) {
+    (<any>document).msExitFullscreen();
+  }
+}
+
+
+export function toggleFullScreen(bool:boolean,elem=document.documentElement) {
+  if(bool) openFullscreen(elem)
+  else closeFullscreen()
 }

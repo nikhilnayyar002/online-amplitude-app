@@ -33,9 +33,9 @@ import { TestEffect } from './state/state.effects';
     /*
       InMemoryWebApi Configer
     */
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService
-    ),
+    // HttpClientInMemoryWebApiModule.forRoot(
+    //   InMemoryDataService
+    // ),
     /**
      * Store (two states): test(Test), index(number)
      */

@@ -19,10 +19,11 @@
   <!-- buttons for Full Screen & Pause-->
   <form class="form-inline ml-auto">
     <button
+      #fullScreenBtn
       type="button"
       class="btn btn-sm btn-light mr-2"
       [style.display]="!mediaMatch ? 'block' : 'none'"
-      disabled
+      (click)="toggleFullScreen()"
     >
       Full Screen
     </button>

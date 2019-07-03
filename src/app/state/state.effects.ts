@@ -37,6 +37,8 @@ export class TestEffect {
 
     updateQuestion:Observable<Action> = createEffect(()=> this.actions$.pipe(
         ofType(TestActions.UpdateQuestion),
+        tap((action)=>console.log(action.question))
+        ,
         tap((action) => 
             this.ms.updateQuestion(action.question).subscribe(
                 ()=> this.store.dispatch( TestActions.SetQuestion({ 

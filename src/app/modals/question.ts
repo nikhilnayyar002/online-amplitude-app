@@ -8,7 +8,6 @@ export interface Question {
     answers:Array<string>;
     state:QuestionState;
     checkedAnswerIndex:number;
-    marks:number;
 
     /*currently for dev. purpose: in-momory-api*/
     id:number; 

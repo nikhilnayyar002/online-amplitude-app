@@ -9,4 +9,7 @@ export interface Test {
     
     /*currently for dev. purpose: in-momory-api*/
     id:number;
+
+    /*update for browser local saving*/
+ 
 }

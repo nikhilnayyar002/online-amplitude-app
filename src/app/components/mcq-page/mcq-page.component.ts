@@ -11,8 +11,10 @@ export class McqPageComponent {
 
   @Input() question:Question;
   @Output('emit') questionEmitEvent= new EventEmitter<Question>();
+  data=null;
 
-  onClick() {
+  onClick(event) {
+    console.log("index: ",event)
     this.questionEmitEvent.emit(this.question)
   }
 

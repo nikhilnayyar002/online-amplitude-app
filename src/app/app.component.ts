@@ -5,7 +5,7 @@ import { PageSwitchDirective } from './page-switch.directive';
 import { PageService } from './page/page.service';
 import { PageComponent } from './page/page-component.modal';
 import { take } from 'rxjs/operators';
-import { createMediaQuery, MediaQueryState, SideState, checkAndGetQuestionState } from './shared/global';
+import { createMediaQuery, MediaQueryState, SideState, checkAndGetQuestionState, toggleFullScreen } from './shared/global';
 import { Store, select } from '@ngrx/store';
 import { Test } from './modals/test';
 import * as TestActions from './state/state.actions'
@@ -22,6 +22,7 @@ export class AppComponent {
   test: Test ;
   index: number;
   isTestOver:boolean=false;
+  isFullScreenEnabled:boolean=false;
 
   //local config
   configData = config;
@@ -47,6 +48,8 @@ export class AppComponent {
 
   /* ng methods ****************************************************************/
 
+  @ViewChild('fullScreenBtn', { static: false }) private fullScreenBtn: ElementRef<HTMLButtonElement>;
+
   ngAfterViewInit(): void {
     this.mediaQueryState.runMediaQuery()
   }
@@ -66,7 +69,6 @@ export class AppComponent {
     */
     this.pageItems = this.ps.getPages();
     this.loadComponent('');
-    
     /**
      * load questions from backend
      */
@@ -178,5 +180,12 @@ export class AppComponent {
     this.stop();
   }
 
+  /**
+   * toggle Full Screen
+   */
+  toggleFullScreen() {
+    this.isFullScreenEnabled?toggleFullScreen(false):toggleFullScreen(true);
+    this.isFullScreenEnabled=!this.isFullScreenEnabled;
+  }
 
 }

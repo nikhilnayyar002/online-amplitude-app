@@ -12,7 +12,8 @@ export class InMemoryDataService implements InMemoryDbService {
     const tests=mockedTests;
     return {
       // 'api/tests'
-      tests
+      tests,
+      'tests/questions':tests[0].questions
     }
   }
 }

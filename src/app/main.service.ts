@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Observable, throwError } from 'rxjs';
 import { Question } from './modals/question';
 import config from 'src/config/config';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 import { Test } from './modals/test';
 
 @Injectable({
@@ -20,8 +20,19 @@ export class MainService {
    * Fetches questions and sets the questions array locally
    */
   getTest(id:number): Observable<Test> {
-    return this.http.get<Test>(config.api.baseURL +'/' + id)
+
+
+    let url=config.api.base +'/tests/' + id;
+    return this.http.get(url)
       .pipe(
+        map((data:any)=>{
+          data.id=data._id
+          data.questions.map((question)=>{
+            question.id=question._id
+            return question as Question
+          })
+          return data as Test
+        }),
         catchError(this.handleError)
       )
   }
@@ -39,7 +50,18 @@ export class MainService {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
-    return this.http.put(config.api.baseURL, updatedQuestion, httpOptions)
+
+    /**
+     * Actually this code below might work currently
+     * in case of in-memory-api
+     */
+    console.log(updatedQuestion.checkedAnswerIndex)
+    let url=config.api.base + '/tests/1/questions/'+ updatedQuestion.id;
+    return this.http.post<{index:number}>(
+      url,
+      { index:updatedQuestion.checkedAnswerIndex }, 
+      httpOptions
+    );
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
