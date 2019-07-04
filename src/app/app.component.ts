@@ -5,11 +5,12 @@ import { PageSwitchDirective } from './page-switch.directive';
 import { PageService } from './page/page.service';
 import { PageComponent } from './page/page-component.modal';
 import { take } from 'rxjs/operators';
-import { createMediaQuery, MediaQueryState, SideState, checkAndGetQuestionState, toggleFullScreen } from './shared/global';
+import { createMediaQuery, MediaQueryState, SideState, checkAndGetQuestionState, toggleFullScreen, QuestionState } from './shared/global';
 import { Store, select } from '@ngrx/store';
 import { Test } from './modals/test';
 import * as TestActions from './state/state.actions'
 import { GlobalState } from './state/global.state';
+import { QuestionStateDB } from './shared/indexDB';
 
 @Component({
   selector: 'app-root',
@@ -81,6 +82,7 @@ export class AppComponent {
       this.index=other.index;
       this.isTestOver=other.isTestOver;
     })
+
   }
 
 

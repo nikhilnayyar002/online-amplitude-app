@@ -3,6 +3,7 @@ import * as TestActions from "./state.actions";
 import { createReducer, on, Action } from '@ngrx/store';
 import { QuestionState, onTestNotFetched } from '../shared/global';
 import { TestOtherState } from './global.state';
+import { QuestionStateDB } from '../shared/indexDB';
 
 export const initialTestState:Test = {
     name:'',
@@ -16,6 +17,7 @@ const testReducer = createReducer(
     initialTestState,
     on(TestActions.SetTest,(state,action)=>(action.test)),
     on(TestActions.SetQuestionState, (state, action)=>{
+        QuestionStateDB.updateData(action.state, action.index+1);
         state.questions[action.index].state=action.state
         if(action.state==QuestionState.Unvisited)
             state.questions[action.index].checkedAnswerIndex=null

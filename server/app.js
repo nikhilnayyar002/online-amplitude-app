@@ -16,11 +16,28 @@ var testsRouter = require('./routes/tests');
  */
 require('dotenv').config()
 
+mongoose.set('bufferCommands', false);
+mongoose.set('useNewUrlParser', true);
 // Set up mongoose connection
 mongoose.connect(process.env.MONGO_DB_URL, (err) => {
     if (!err) { console.log('MongoDB connection succeeded.'); }
     else { console.log('Error in MongoDB connection : ' + JSON.stringify(err, undefined, 2)); }
 });
+
+// mongoose.connection.on('connected', function(){
+//     console.log("Mongoose default connection is open to ");
+// });
+
+// mongoose.connection.on('error', function(err){
+//     console.log("Mongoose default connection has occured "+err+" error");
+// });
+
+// mongoose.connection.on('disconnected', function(){
+//     console.log("Mongoose default connection is disconnected");
+// });
+
+
+
 
 var app = express();
 app.use(logger('dev'));
@@ -29,6 +46,14 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.disable('view cache');
 
+/**
+ * pre-requesties
+ */
+app.all('*',function(req, res, next) {
+  res.set('Access-Control-Allow-Origin', '*');
+  res.set('Access-Control-Allow-Headers','Content-Type');
+  next();
+})
 app.use('/tests', testsRouter);
 
 // catch 404 and forward to error handler
@@ -44,6 +69,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
+  console.log(err)
   res.send(err);
 });
 

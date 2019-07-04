@@ -5,14 +5,12 @@ import { Question } from './modals/question';
 import config from 'src/config/config';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Test } from './modals/test';
+import { QuestionStateDB } from './shared/indexDB';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MainService {
-
-  mockedTest:Test;
-  selectedQuestionIndex: number;
 
   constructor(private http: HttpClient) { }
 
@@ -21,8 +19,7 @@ export class MainService {
    */
   getTest(id:number): Observable<Test> {
 
-
-    let url=config.api.base +'/tests/' + id;
+    let url=`${config.api.base}/tests/${id}`
     return this.http.get(url)
       .pipe(
         map((data:any)=>{
@@ -33,6 +30,10 @@ export class MainService {
           })
           return data as Test
         }),
+        tap((test)=>{
+          QuestionStateDB.testID=test.id
+          QuestionStateDB.setup(test.questions)
+        }),
         catchError(this.handleError)
       )
   }
@@ -42,7 +43,7 @@ export class MainService {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     };
 
-    let url = config.api.base + '/tests/' + testID +'/questions/' + questionID;
+    let url=`${config.api.base}/tests/${testID}/questions/${questionID}`
     return this.http.post<{index:number}>( url, { data:optionIndex},  httpOptions).pipe(
       catchError(this.handleError)
     );

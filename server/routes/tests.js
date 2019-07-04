@@ -1,29 +1,33 @@
 var express = require('express');
 var router = express.Router();
 var TestModal = require('../modals/test')
-
-/* GET home page. */
-
-router.all('*',function(req, res, next) {
-  res.set('Access-Control-Allow-Origin', '*');
-  res.set('Access-Control-Allow-Headers','Content-Type');
-  next();
-})
+const mongoose = require('mongoose');
 
 router.get('/:id', function(req, res, next) {
   let testID=req.params.id;
-  TestModal.findById(testID, function (err, test) {
+  /**
+   * '0': 'disconnected', '1': 'connected', '2': 'connecting',
+   * '3': 'disconnecting','99': 'uninitialized',
+   */
+  if(!mongoose.connections[0]._readyState) next(new Error('error connecting db'));
+
+  TestModal.findById(testID,function (err, test) {
     if (err) { return next(err); }
-    // Successful - 
-    //res.set('Content-Type', 'application/json');
     res.json(test)
-  });
+  })
+ 
 });
 
 
 router.post('/:id/questions/:qid', function(req, res, next) {
   let testID=req.params.id;
   let questionID=req.params.qid;
+
+  /**
+   * '0': 'disconnected', '1': 'connected', '2': 'connecting',
+   * '3': 'disconnecting','99': 'uninitialized',
+   */
+  if(!mongoose.connections[0]._readyState) next(new Error('error connecting db'));
 
   TestModal.findById(testID, function (err, test) {
     if (err) { return next(err); }
@@ -39,6 +43,12 @@ router.post('/:id/questions/:qid', function(req, res, next) {
 
 router.post('/:id/time', function(req, res, next) {
   let testID=req.params.id;
+
+  /**
+   * '0': 'disconnected', '1': 'connected', '2': 'connecting',
+   * '3': 'disconnecting','99': 'uninitialized',
+   */
+  if(!mongoose.connections[0]._readyState) next(new Error('error connecting db'));
 
   TestModal.findById(testID, function (err, test) {
     if (err) { return next(err); }
