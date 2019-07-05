@@ -20,10 +20,10 @@ import { QuestionStateDB } from './shared/indexDB';
 export class AppComponent {
 
   //new variables
-  test: Test ;
+  test: Test;
   index: number;
-  isTestOver:boolean=false;
-  isFullScreenEnabled:boolean=false;
+  isTestOver: boolean = false;
+  isFullScreenEnabled: boolean = false;
 
   //local config
   configData = config;
@@ -38,7 +38,7 @@ export class AppComponent {
 
   // media state and side toggler state
   sideState = new SideState();
-  mediaQueryState: MediaQueryState=createMediaQuery(
+  mediaQueryState: MediaQueryState = createMediaQuery(
     "(max-width: 900px)", (x: boolean) => this.sideState.toggler(!x, x), this.cdr
   );
 
@@ -73,14 +73,25 @@ export class AppComponent {
     /**
      * load questions from backend
      */
-    this.store.dispatch(TestActions.GetTest({id:1}))
-    this.store.pipe(select((state)=>state.test)).subscribe((test)=>{
-      this.test=test
-      if (test.time) this.start()
+    this.store.dispatch(TestActions.GetTest({ id: 1 }))
+    this.store.pipe(select((state) => state.test)).subscribe((test) => {
+      this.test = test
+      if (test.questions.length) {
+        if (this.test.time) this.start()
+        else
+          /**
+           *  one tick after the first ng check.
+           */
+          setTimeout(() => {
+            this.store.dispatch(TestActions.TestOver());
+            this.pause();
+          }, 0);
+      }
+
     })
-    this.store.pipe(select((state)=>state.other)).subscribe((other)=> {
-      this.index=other.index;
-      this.isTestOver=other.isTestOver;
+    this.store.pipe(select((state) => state.other)).subscribe((other) => {
+      this.index = other.index;
+      this.isTestOver = other.isTestOver;
     })
 
   }
@@ -129,8 +140,8 @@ export class AppComponent {
    * section dropdown items click handler
    */
   sectionClick(index: number) {
-    let state=checkAndGetQuestionState(this.test.questions[this.index])
-    this.store.dispatch(TestActions.SetIndex({index:index}))
+    let state = checkAndGetQuestionState(this.test.questions[this.index])
+    this.store.dispatch(TestActions.SetIndex({ index: index }))
     return false
   }
   /**
@@ -177,19 +188,18 @@ export class AppComponent {
   @ViewChild('pauseSubmitBtn', { static: false }) private pauseSubmitBtn: ElementRef;
 
   pause() {
-    console.log(2)
     this.pauseModalNoBtn.nativeElement.click();
     this.pauseSubmitBtn.nativeElement.click();
     this.stop();
-    this.store.dispatch(TestActions.PauseTestServer({time:this.test.time}))
+    this.store.dispatch(TestActions.PauseTestServer({ time: this.test.time }))
   }
 
   /**
    * toggle Full Screen
    */
   toggleFullScreen() {
-    this.isFullScreenEnabled?toggleFullScreen(false):toggleFullScreen(true);
-    this.isFullScreenEnabled=!this.isFullScreenEnabled;
+    this.isFullScreenEnabled ? toggleFullScreen(false) : toggleFullScreen(true);
+    this.isFullScreenEnabled = !this.isFullScreenEnabled;
   }
 
 }
