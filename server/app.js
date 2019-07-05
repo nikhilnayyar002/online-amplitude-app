@@ -17,8 +17,12 @@ var testsRouter = require('./routes/tests');
 require('dotenv').config()
 
 mongoose.set('bufferCommands', false);
+//mongoose.set('bufferMaxEntries', 0);
 mongoose.set('useNewUrlParser', true);
-// Set up mongoose connection
+
+/**
+ * Set up mongoose connection
+ */
 mongoose.connect(process.env.MONGO_DB_URL, (err) => {
     if (!err) { console.log('MongoDB connection succeeded.'); }
     else { console.log('Error in MongoDB connection : ' + JSON.stringify(err, undefined, 2)); }
@@ -35,9 +39,6 @@ mongoose.connect(process.env.MONGO_DB_URL, (err) => {
 // mongoose.connection.on('disconnected', function(){
 //     console.log("Mongoose default connection is disconnected");
 // });
-
-
-
 
 var app = express();
 app.use(logger('dev'));
@@ -56,21 +57,25 @@ app.all('*',function(req, res, next) {
 })
 app.use('/tests', testsRouter);
 
-// catch 404 and forward to error handler
+/**
+ * catch 404 and forward to error handler
+ */
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+/**
+ * error handler
+ */
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
+  /**
+   * set locals, only providing error in development
+   */
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  console.log(err)
-  res.send(err);
+  res.status(err.status || 500);  // render the error page
+  //console.log(err)
+  res.send(err.message ? err.message: error.json);
 });
 
 module.exports = app;

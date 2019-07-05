@@ -3,13 +3,29 @@ var router = express.Router();
 var TestModal = require('../modals/test')
 const mongoose = require('mongoose');
 
-router.get('/:id', function(req, res, next) {
-  let testID=req.params.id;
+router.all('*', function(req,res, next) {
+
   /**
+   * @Handling_MongoDB_Connection_Error 
+   *  _readyState values:
+   * 
    * '0': 'disconnected', '1': 'connected', '2': 'connecting',
    * '3': 'disconnecting','99': 'uninitialized',
+   * 
+   *  Currently i am only setting error condition.
+   *  ON other bad conditions there will be no response.
+   *  
+   *  one can also add a setTimeOut(()=> res.send("db not ready."), k000) 
+   *  function after each query so that a response is send k sec.
+   * 
    */
   if(!mongoose.connections[0]._readyState) next(new Error('error connecting db'));
+  
+  next();
+})
+
+router.get('/:id', function(req, res, next) {
+  let testID=req.params.id;
 
   TestModal.findById(testID,function (err, test) {
     if (err) { return next(err); }
@@ -22,12 +38,6 @@ router.get('/:id', function(req, res, next) {
 router.post('/:id/questions/:qid', function(req, res, next) {
   let testID=req.params.id;
   let questionID=req.params.qid;
-
-  /**
-   * '0': 'disconnected', '1': 'connected', '2': 'connecting',
-   * '3': 'disconnecting','99': 'uninitialized',
-   */
-  if(!mongoose.connections[0]._readyState) next(new Error('error connecting db'));
 
   TestModal.findById(testID, function (err, test) {
     if (err) { return next(err); }
@@ -43,12 +53,6 @@ router.post('/:id/questions/:qid', function(req, res, next) {
 
 router.post('/:id/time', function(req, res, next) {
   let testID=req.params.id;
-
-  /**
-   * '0': 'disconnected', '1': 'connected', '2': 'connecting',
-   * '3': 'disconnecting','99': 'uninitialized',
-   */
-  if(!mongoose.connections[0]._readyState) next(new Error('error connecting db'));
 
   TestModal.findById(testID, function (err, test) {
     if (err) { return next(err); }
