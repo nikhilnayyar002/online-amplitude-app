@@ -15,7 +15,7 @@ import {SubSink} from 'subsink'
 export class McqStatesComponent {
 
   questions:Question[];
-  index:number;
+  indexOfCurrQ:number=0;
   private isTestOver=false;
   
   subs=new SubSink();
@@ -25,7 +25,7 @@ export class McqStatesComponent {
   ) { 
     this.subs.add(
       store.pipe(select(state=>state.other)).subscribe(other => {
-        this.index=other.index;
+        this.indexOfCurrQ=other.index;
         this.isTestOver=other.isTestOver;
       })
     )
@@ -63,8 +63,8 @@ export class McqStatesComponent {
   badgeClick(value: string) {
     if(this.isTestOver) return
     let i = +value.split(':')[1]
-    let state=checkAndGetQuestionState(this.questions[this.index])
-    this.store.dispatch(SetQuestionState({state:state, index:this.index}))
+    let state=checkAndGetQuestionState(this.questions[this.indexOfCurrQ])
+    this.store.dispatch(SetQuestionState({state:state, index:this.indexOfCurrQ}))
     this.store.dispatch(SetIndex({index:i}))
   }
 

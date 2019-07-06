@@ -37,11 +37,11 @@ body {
 .mcq-question-badge-small {
     width: 25px;
     height: 25px;
-    padding-top: 5px;
+    padding-top: 6px !important;
 }
 
 /*
-  overriding the default primary "blue" theme for badge in bootstrap.
+  overriding the default in bootstrap.
 */
 .badge-primary {
   background: #ae10e2;
@@ -53,6 +53,13 @@ body {
   }
 }
 
+.modal-footer, .modal-header, .nav-tabs{
+  border: none !important;
+}
+
+.nav-tabs {
+  border: none !important;
+}
 
 /*------------------------------------------------------ nikoscar.web.app */ 
 

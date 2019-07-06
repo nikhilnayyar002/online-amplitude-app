@@ -1,7 +1,12 @@
 @import '../config/config.scss';
 
 :host {
-  min-height: 100%;
+
+  //min-height: 100%;
+
+  //making app component re-usable
+  height: 100vh;
+  
   position: relative;
   display: block;
 }
@@ -11,10 +16,6 @@
     overflow: auto;
     padding: 140px 16px 120px;
     width: $side-width;
-
-    .top-content {
-        background: darkorange;
-    }
 }
 
 .side-toggler {

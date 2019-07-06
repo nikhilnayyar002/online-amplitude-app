@@ -1,5 +1,5 @@
 <!-- main nav bar -->
-<nav [class]="'navbar navbar-expand-lg ' + configData.nav.navType">
+<nav class='navbar navbar-expand-lg' prim>
   <!-- logo-->
   <a class="navbar-brand" href="#">
     <span id="nav-bar-logo">{{ configData.company.name }}</span>
@@ -8,9 +8,9 @@
   <span class="navbar-text ml-auto mr-auto col">
     <!-- time -->
     <span
-      class="badge badge-primary"
-      style="font-size: 14px;background:
-      #244d79"
+      class="badge"
+      style="font-size: 14px"
+      prim-lg
     >
       Time: {{ test.time | timer }}
     </span>
@@ -18,20 +18,22 @@
 
   <!-- buttons for Full Screen & Pause-->
   <form class="form-inline ml-auto">
-    <button
+    <button 
       #fullScreenBtn
       type="button"
-      class="btn btn-sm btn-light mr-2"
+      class="btn btn-sm mr-2"
       [style.display]="!mediaMatch ? 'block' : 'none'"
       (click)="toggleFullScreen()"
+      sec
     >
       Full Screen
     </button>
     <button
       type="button"
-      class="btn btn-sm btn-light"
+      class="btn btn-sm"
       data-toggle="modal"
       data-target="#pauseModal"
+      sec
     >
       Pause
     </button>
@@ -39,14 +41,14 @@
 </nav>
 
 <!-- show sections drop-down-->
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs" prim-lg>
   <!-- current test name -->
   <li class="nav-item">
     <span class="nav-link disabled">{{ test?.name }}</span>
   </li>
 
     <!-- choose section -->
-    <li class="nav-item dropdown" >
+    <li class="nav-item dropdown" sec>
       <a
         class="nav-link dropdown-toggle"
         data-toggle="dropdown"
@@ -93,13 +95,15 @@
       also added inline styling
      -->
     <span
-      class="arrow bg-primary text-light"
-      style="left: -20px; padding: 10px 0;overflow: hidden;width: 20px;"
+      class="arrow"
+      style="left: -26px; padding: 10px 0;overflow: hidden;width: 26px;"
       (click)="shortenClick()"
+      prim
     >
       <span
         [innerHTML]="sideState.shortenArrowText | safeStyle: 'dom'"
         [style.margin-left]="sideState.shortenArrowMargin"
+        style="font-size: 40px; line-height: 0px;"
       ></span>
     </span>
 
@@ -121,8 +125,9 @@
 
       <!-- side top content -->
       <div
-        class="top-content text-white p-2 pl-3 w-100 position-absolute"
+        class="text-white p-2 pl-3 w-100 position-absolute"
         style="top: 0;left: 0;"
+        prim
       >
         <!-- user image -->
         <img class="small-image" src="../assets/no-user.png" />
@@ -136,13 +141,13 @@
             <span
               class="mcq-question-badge-small badge rounded-circle m-1
               badge-success"
-              >?</span
+              >1</span
             >
             <span style="font-size: 14px;">Answered</span>
             <span
               class="mcq-question-badge-small badge rounded-circle m-1
               badge-danger"
-              >?</span
+              >1</span
             >
             <span style="font-size: 14px;">Unanswered</span>
           </div>
@@ -150,13 +155,13 @@
             <span
               class="mcq-question-badge-small badge rounded-circle m-1
               badge-primary"
-              >?</span
+              >1</span
             >
             <span style="font-size: 14px;">Marked</span>
             <span
               class="mcq-question-badge-small badge rounded-circle m-1
               badge-secondary"
-              >?</span
+              >1</span
             >
             <span style="font-size: 14px;">Unvisited</span>
           </div>
@@ -170,30 +175,32 @@
 
       <!-- side bottom content-->
       <div
-        class="d-flex p-3 position-absolute w-100 bg-white
+        class="d-flex p-3 position-absolute w-100
         justify-content-center flex-column border-top"
-        style="bottom: 0; left:
-        0;"
+        style="bottom: 0; left:0;"
+        prim
       >
         <!-- Question & Instructions button -->
         <div>
           <button
             type="button"
-            class="btn btn-sm btn-primary mr-2"
+            class="btn btn-sm mr-2"
             (click)="checkAndLoadComponent('Questions')"
+            sec
           >
             Question Paper
           </button>
           <button
             type="button"
-            class="btn btn-sm btn-primary"
+            class="btn btn-sm"
             (click)="checkAndLoadComponent('Instructions')"
+            sec
           >
             Instructions
           </button>
         </div>
         <!-- Submit Test button -->
-        <button type="button" class="btn mt-3 btn-primary mr-2" disabled>
+        <button type="button" class="btn mt-3 btn-sm mr-2" disabled sec>
           Submit Test
         </button>
       </div>
@@ -216,7 +223,7 @@
 >
   <!--  -->
   <div class="modal-dialog" role="document">
-    <div class="modal-content">
+    <div class="modal-content" prim>
       <!--
           modal-header was here
         -->
@@ -227,12 +234,13 @@
         <button
           type="button"
           #pauseModalNoBtn
-          class="btn btn-secondary btn-sm"
+          class="btn btn-sm"
           data-dismiss="modal"
+          prim-lg
         >
           No
         </button>
-        <button type="button" class="btn btn-primary btn-sm" (click)="pause()">
+        <button type="button" class="btn btn-sm" (click)="pause()" sec>
           Yes
         </button>
       </div>
@@ -261,7 +269,7 @@
 >
   <!--  -->
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
+    <div class="modal-content" prim>
       <div class="modal-header">
         <h5 class="modal-title">Test Paused</h5>
       </div>
@@ -278,15 +286,16 @@
 
           <button
             type="button"
-            class="btn btn-secondary btn-sm"
+            class="btn btn-sm"
             data-dismiss="modal"
             [disabled]="test.time == 0 ? true : false"
             (click)="start()"
+            prim-lg
           >
             No
           </button>
 
-        <button type="button" class="btn btn-primary btn-sm" disabled>
+        <button type="button" class="btn btn-sm" disabled sec>
           Submit
         </button>
       </div>

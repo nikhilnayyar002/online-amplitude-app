@@ -1,36 +1,95 @@
 @import "~bootstrap/scss/bootstrap.scss";
+@import "functions";
 
-$primary-color:#007bff; /*bg-primary*/
-$secondary-color:white;
+//colors
+$dark-color:#1d2331;
+$light-color: white;
+$grey-color:#676464;
 
-//page
-$page-bg: #000000f2;
-$page-bg-padding:25px;
-$page-bg-padding-top:8rem;
+//background colors
+$primary-bg-color: #001a39; /*bg-primary*/
+$secondary-bg-color:rgb(253, 200, 0);
+
+//override forground color
+$primary-color:pick-visible-color($primary-bg-color, black, white);
+$secondary-color:pick-visible-color($secondary-bg-color, black, white);
+
+//light variation
+$primary-color-light:mix($primary-bg-color, #fff,80%);
+
+//wanna override above forground color
+$override-primary-color:null;
+$override-secondary-color:$dark-color;
 
 //nav
 $navbar-height: 53px;
 $nav-height-sections: 36px;
 
+//side - element
 $side-width:320px;
 
-//mcq image
-$mcq-page-image-max-width: 100%;
-$mcq-page-image-max-height: 300px;
-$mcq-page-image-margin: 25px 0;
 
+//common function for returning matching or overriding color
 
-@mixin page-default() {
-    //height: calc(100vh - #{$navbar-height + $footer-height});
-    background: $page-bg;
-    color:$secondary-color;
-    padding: $page-bg-padding;
-    padding-top: $page-bg-padding-top;
-    transition: all 1s;
-    //  @media (max-width: 992px) {
-    //    & {
-    //        height: calc(100vh - #{$navbar-height + $footer-height});
-    //    }
-    //  }
-    
+@function return-color($override-color,$color) {
+    @if $override-color != null  {
+        @return $override-color !important;
+    } 
+    @else if $override-color == null  {
+        @return $primary-color !important;
+    } 
+}
+
+//color classes for "primary", "secondary" that can be inherited
+
+%primary-color {
+    color:return-color($override-primary-color, $primary-color);
+}
+%secondary-color {
+    color:return-color($override-secondary-color, $secondary-color);
+}
+
+//setting bg-color, color of elements with attributes "prim" or "sec" or  "prim-lg".
+
+*[prim] {
+    background-color: $primary-bg-color !important;
+    @extend %primary-color;
+    & *{
+        color: inherit !important;
+    }
+}
+
+*[sec], *[prim] *[sec], *[prim-lg] *[sec]{
+    background-color: $secondary-bg-color !important;
+    @extend %secondary-color;
+    & *{
+        color: inherit !important;
+    }
+}
+*[prim-lg], *[prim] *[prim-lg] {
+    background-color: $primary-color-light !important;
+    @extend %primary-color;
+    & *{
+        color: inherit !important;
+    }
+}
+
+// customing bootstrap buttons with "sec" attribute set 
+
+button[sec] {
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 1px 4px rgba($secondary-bg-color, 0.4);
+    }
+    &:hover {
+        background-color: darken($secondary-bg-color, 10%) !important;
+    }
+}
+
+// overriding bootstrap "border-<T>" class
+
+@each $prefix in left,right,top,bottom {
+    .border-#{$prefix} {
+        border-#{$prefix}: 1px solid #0000005e !important;
+    }
 }

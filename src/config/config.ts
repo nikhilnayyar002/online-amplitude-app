@@ -1,7 +1,6 @@
 
 let config = {
     nav: {
-        navType : " navbar-dark bg-primary",
     },
     api:{
         base:"http://localhost:3000",
