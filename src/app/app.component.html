@@ -1,5 +1,5 @@
 <!-- main nav bar -->
-<nav class='navbar navbar-expand-lg' prim>
+<nav class='navbar bg-primary navbar-expand-lg'>
   <!-- logo-->
   <a class="navbar-brand" href="#">
     <span id="nav-bar-logo">{{ configData.company.name }}</span>
@@ -8,9 +8,8 @@
   <span class="navbar-text ml-auto mr-auto col">
     <!-- time -->
     <span
-      class="badge"
+      class="badge bg-info"
       style="font-size: 14px"
-      prim-lg
     >
       Time: {{ test.time | timer }}
     </span>
@@ -21,19 +20,17 @@
     <button 
       #fullScreenBtn
       type="button"
-      class="btn btn-sm mr-2"
+      class="btn btn-sm mr-2 btn-secondary"
       [style.display]="!mediaMatch ? 'block' : 'none'"
       (click)="toggleFullScreen()"
-      sec
     >
       Full Screen
     </button>
     <button
       type="button"
-      class="btn btn-sm"
+      class="btn btn-sm btn-secondary"
       data-toggle="modal"
       data-target="#pauseModal"
-      sec
     >
       Pause
     </button>
@@ -41,14 +38,14 @@
 </nav>
 
 <!-- show sections drop-down-->
-<ul class="nav nav-tabs" prim-lg>
+<ul class="nav nav-tabs bg-info">
   <!-- current test name -->
   <li class="nav-item">
     <span class="nav-link disabled">{{ test?.name }}</span>
   </li>
 
     <!-- choose section -->
-    <li class="nav-item dropdown" sec>
+    <li class="nav-item dropdown">
       <a
         class="nav-link dropdown-toggle"
         data-toggle="dropdown"
@@ -95,10 +92,9 @@
       also added inline styling
      -->
     <span
-      class="arrow"
+      class="arrow bg-primary"
       style="left: -26px; padding: 10px 0;overflow: hidden;width: 26px;"
       (click)="shortenClick()"
-      prim
     >
       <span
         [innerHTML]="sideState.shortenArrowText | safeStyle: 'dom'"
@@ -109,7 +105,7 @@
 
     <!-- main side content-->
     <div
-      class="side"
+      class="side bg-info"
       style="background: white;"
       [style.display]="sideState.sideStateOpen ? 'block' : 'none'"
     >
@@ -125,9 +121,8 @@
 
       <!-- side top content -->
       <div
-        class="text-white p-2 pl-3 w-100 position-absolute"
+        class="text-white p-2 pl-3 w-100 position-absolute bg-primary"
         style="top: 0;left: 0;"
-        prim
       >
         <!-- user image -->
         <img class="small-image" src="../assets/no-user.png" />
@@ -176,31 +171,28 @@
       <!-- side bottom content-->
       <div
         class="d-flex p-3 position-absolute w-100
-        justify-content-center flex-column border-top"
+        justify-content-center flex-column border-top bg-primary"
         style="bottom: 0; left:0;"
-        prim
       >
         <!-- Question & Instructions button -->
         <div>
           <button
             type="button"
-            class="btn btn-sm mr-2"
+            class="btn btn-sm mr-2 btn-secondary"
             (click)="checkAndLoadComponent('Questions')"
-            sec
           >
             Question Paper
           </button>
           <button
             type="button"
-            class="btn btn-sm"
+            class="btn btn-sm btn-secondary"
             (click)="checkAndLoadComponent('Instructions')"
-            sec
           >
             Instructions
           </button>
         </div>
         <!-- Submit Test button -->
-        <button type="button" class="btn mt-3 btn-sm mr-2" disabled sec>
+        <button type="button" class="btn mt-3 btn-sm mr-2 btn-secondary" disabled>
           Submit Test
         </button>
       </div>
@@ -223,7 +215,7 @@
 >
   <!--  -->
   <div class="modal-dialog" role="document">
-    <div class="modal-content" prim>
+    <div class="modal-content bg-primary">
       <!--
           modal-header was here
         -->
@@ -234,13 +226,12 @@
         <button
           type="button"
           #pauseModalNoBtn
-          class="btn btn-sm"
+          class="btn btn-sm btn-info"
           data-dismiss="modal"
-          prim-lg
         >
           No
         </button>
-        <button type="button" class="btn btn-sm" (click)="pause()" sec>
+        <button type="button" class="btn btn-sm btn-secondary" (click)="pause()">
           Yes
         </button>
       </div>
@@ -269,7 +260,7 @@
 >
   <!--  -->
   <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content" prim>
+    <div class="modal-content bg-primary">
       <div class="modal-header">
         <h5 class="modal-title">Test Paused</h5>
       </div>
@@ -286,16 +277,15 @@
 
           <button
             type="button"
-            class="btn btn-sm"
+            class="btn btn-sm btn-info"
             data-dismiss="modal"
             [disabled]="test.time == 0 ? true : false"
             (click)="start()"
-            prim-lg
           >
             No
           </button>
 
-        <button type="button" class="btn btn-sm" disabled sec>
+        <button type="button" class="btn btn-sm btn-secondary" disabled>
           Submit
         </button>
       </div>

@@ -1,13 +1,13 @@
 <!--
       Heading: Eg: Question No. 1, Instructions, Questions
   -->
-<div class="p-2 pl-3 w-100 position-absolute d-flex" style="top:0;left: 0;z-index: 1" prim>
+<div class="p-2 pl-3 w-100 position-absolute d-flex bg-primary" style="top:0;left: 0;z-index: 1">
   <!-- main heading -->
   <span>
     Question No. {{  index!=null? index + 1:''  }}
   </span>
 
-  <div class="bg-light text-dark px-1 ml-auto" prim-lg>
+  <div class="text-dark px-1 ml-auto bg-info">
     <small>Marks:</small>
     <span class="badge badge-success mr-1">+ 3</span>
     <span class="badge badge-danger">- 1</span>
@@ -29,11 +29,10 @@
 <!--
     page footer. basically contains buttons.
   -->
-<div class="d-flex p-3 position-absolute w-100 border-top" style="bottom:0; left: 0;" prim>
-
-  <button type="button" class="btn btn-sm mr-2" (click)="mark()" sec>Mark
+<div class="d-flex p-3 position-absolute w-100 border-top bg-primary" style="bottom:0; left: 0;">
+  <button type="button" class="btn btn-sm mr-2 bg-secondary" (click)="mark()">Mark
     Q & Next</button>
-  <button type="button" class="btn btn-sm mr-2" (click)="clear()" sec>Clear
+  <button type="button" class="btn btn-sm mr-2 bg-secondary" (click)="clear()">Clear
     Response</button>
-  <button type="button" class="btn btn-sm ml-auto" (click)="next()" sec>Next</button>
+  <button type="button" class="btn btn-sm ml-auto bg-secondary" (click)="next()">Next</button>
 </div>

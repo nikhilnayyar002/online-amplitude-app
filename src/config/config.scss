@@ -1,4 +1,4 @@
-@import "~bootstrap/scss/bootstrap.scss";
+
 @import "functions";
 
 //colors
@@ -15,7 +15,7 @@ $primary-color:pick-visible-color($primary-bg-color, black, white);
 $secondary-color:pick-visible-color($secondary-bg-color, black, white);
 
 //light variation
-$primary-color-light:mix($primary-bg-color, #fff,80%);
+$primary-bg-light:mix($primary-bg-color, #fff,80%);
 
 //wanna override above forground color
 $override-primary-color:null;
@@ -28,6 +28,15 @@ $nav-height-sections: 36px;
 //side - element
 $side-width:320px;
 
+// modify existing colors in bootstrap $theme-colors map
+$theme-colors: (
+  "primary": $primary-bg-color ,
+  "secondary":$secondary-bg-color ,
+  "info": $primary-bg-light
+);
+
+//import bootstrap
+@import "~bootstrap/scss/bootstrap.scss";
 
 //common function for returning matching or overriding color
 
@@ -42,47 +51,42 @@ $side-width:320px;
 
 //color classes for "primary", "secondary" that can be inherited
 
+
+
 %primary-color {
     color:return-color($override-primary-color, $primary-color);
 }
 %secondary-color {
     color:return-color($override-secondary-color, $secondary-color);
 }
+%info-color {
+    color:return-color($override-primary-color, $primary-color);
+}
 
-//setting bg-color, color of elements with attributes "prim" or "sec" or  "prim-lg".
+//setting color of elements. Bootstrap was nor found to add matching color
+//given a bg color.
 
-*[prim] {
-    background-color: $primary-bg-color !important;
-    @extend %primary-color;
-    & *{
-        color: inherit !important;
+@each $prefix in primary, secondary, info{
+    *[class*="#{$prefix}"] {
+        @extend %#{$prefix}-color;
+        & *{
+            color: inherit !important;
+        }
     }
 }
 
-*[sec], *[prim] *[sec], *[prim-lg] *[sec]{
-    background-color: $secondary-bg-color !important;
+*[class*="primary"] *[class*="secondary"],
+*[class*="info"] *[class*="secondary"],
+*[class*="primary"] *[class*="info"] *[class*="secondary"] {
     @extend %secondary-color;
     & *{
         color: inherit !important;
     }
 }
-*[prim-lg], *[prim] *[prim-lg] {
-    background-color: $primary-color-light !important;
+*[class*="primary"] *[class*="info"]{
     @extend %primary-color;
     & *{
         color: inherit !important;
-    }
-}
-
-// customing bootstrap buttons with "sec" attribute set 
-
-button[sec] {
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 1px 4px rgba($secondary-bg-color, 0.4);
-    }
-    &:hover {
-        background-color: darken($secondary-bg-color, 10%) !important;
     }
 }
 
@@ -90,6 +94,73 @@ button[sec] {
 
 @each $prefix in left,right,top,bottom {
     .border-#{$prefix} {
-        border-#{$prefix}: 1px solid #0000005e !important;
+        border-#{$prefix}: 1px solid $primary-bg-color !important;
     }
+}
+
+// theming dropdown
+@mixin createDropDown($bg, $color) {
+    .dropdown {
+        .dropdown-toggle {
+            background:  $bg !important;
+            border:none !important;
+        }
+        .dropdown-menu {
+            padding: 0;
+            border: none;
+            box-shadow: black 0px 3px 8px;
+        }
+        .dropdown-item {
+            background: $bg;
+            padding: 10px 15px;
+            &:hover {
+                background: darken( $bg, 10%);
+            }
+            &:active {
+                background: darken($bg, 10%);
+            }
+        }
+    }
+    .dropdown>*{
+        color:$color !important;
+    }
+}
+
+@include createDropDown($secondary-bg-color, black);
+
+// theming radio and dropdown
+@mixin createCustomRadio($color) {
+    .custom-radio {
+        .custom-control-label {
+            padding-top: 3px;
+            padding-left: 5px;
+        }
+        .custom-control-input:checked ~ .custom-control-label::before {
+            border-color: $color;
+            background-color: darken($color, 10%);
+            box-shadow: 0 0 0px 4px $color;
+        }
+        .custom-control-label::before {
+            border: darken( $color, 10%) solid 1px;
+        }
+    }
+}
+@include createCustomRadio($secondary-bg-color);
+
+//navbar and nav
+.navbar {
+    height:$navbar-height;
+}
+.nav {
+    height: $nav-height-sections;
+}
+
+// global
+
+* {
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: -moz-none;
+    -o-user-select: none;
+    user-select: none;
 }

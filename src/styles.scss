@@ -44,7 +44,11 @@ body {
   overriding the default in bootstrap.
 */
 .badge-primary {
-  background: #ae10e2;
+  background: #ae10e2 !important;
+}
+
+.badge-secondary {
+  background:#9a9376 !important;
 }
 
 .badge {
@@ -130,15 +134,4 @@ body {
 .change .bar3 {
   -webkit-transform: rotate(45deg) translate(-8px, -8px);
   transform: rotate(45deg) translate(-8px, -8px);
-}
-
-/*
-  customizing bootstrap radio buttons
-*/
-
-.custom-control  {
-  margin-bottom:5px;
-  .custom-control-label {
-      padding-top: 4px;
-  }
 }
